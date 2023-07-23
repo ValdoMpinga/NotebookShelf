@@ -12,6 +12,8 @@ import {
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
+import ShelfScreen from './src/screens/ShelfScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +31,7 @@ function App() {
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="home" component={HomeScreen} options={{}} />
+            <Stack.Screen name="home" component={ShelfScreen} options={{}} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

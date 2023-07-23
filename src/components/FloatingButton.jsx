@@ -4,11 +4,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import floatingButtonStyles from '../styles/components/floatingButtonStyles';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-const FloatingButton = () => {
+const FloatingButton = ({iconName}) => {
   return (
       <TouchableOpacity style={floatingButtonStyles.fabButton}>
         <MaterialCommunityIcons
-          name="bookshelf"
+          name={iconName}
           size={35}
           color={Colors.black} />
       </TouchableOpacity>

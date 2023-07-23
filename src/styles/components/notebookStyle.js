@@ -6,20 +6,19 @@ const screenWidth = Dimensions.get('window').width;
 
 export default notebookStyles = StyleSheet.create({
     container: {
-        flex: 1,
         width: screenWidth / 2.25,
-        height: 140,
+        height: 200,
         borderRadius: 10,
         backgroundColor: Colors.orange,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-
+        margin: 10,
 
     },
     notebookNameView: {
         flex: 2,
         marginTop: 10,
-                alignItems: 'center',
+        alignItems: 'center',
 
     },
     notebookName: {

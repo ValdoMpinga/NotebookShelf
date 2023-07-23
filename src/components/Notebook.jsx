@@ -7,22 +7,24 @@ import Colors from '../utils/constants';
 
 const Notebook = ({notebookName, numberOfPages}) => {
   return (
-    <View style={notebookStyle.container}>
-      <View style={notebookStyle.notebookNameView}>
-        <Text style={notebookStyle.notebookName}>{notebookName}</Text>
+    <TouchableOpacity>
+      <View style={notebookStyle.container}>
+        <View style={notebookStyle.notebookNameView}>
+          <Text style={notebookStyle.notebookName}>{notebookName}</Text>
+        </View>
+        <View style={notebookStyle.notebookPagesView}>
+          <Text style={notebookStyle.notebookPages}>{numberOfPages} pages</Text>
+        </View>
+        <View style={notebookStyle.notebookEditDelete}>
+          <TouchableOpacity onPress={() => {}}>
+            <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <AntDesign name="delete" size={33} color={Colors.red} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={notebookStyle.notebookPagesView}>
-        <Text style={notebookStyle.notebookPages}>{numberOfPages} pages</Text>
-      </View>
-      <View style={notebookStyle.notebookEditDelete}>
-        <TouchableOpacity onPress={() => {}}>
-          <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <AntDesign name="delete" size={33} color={Colors.red} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

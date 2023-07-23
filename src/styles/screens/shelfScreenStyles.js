@@ -1,9 +1,10 @@
-// styles.js
 import { StyleSheet, Dimensions } from 'react-native';
 import Colors from '../../utils/constants';
+
 const screenWidth = Dimensions.get('window').width;
 
-export default homeStyles = StyleSheet.create({
+export default shelfScreenStyles = StyleSheet.create({
+
     container: {
         flex: 1,
         backgroundColor: Colors.blue2,
@@ -13,7 +14,7 @@ export default homeStyles = StyleSheet.create({
         flex: 1,
         paddingTop: 30,
     },
-    homeTitleView: {
+    titleView: {
         flex: 1,
         alignItems: 'center',
         paddingTop: 20,
@@ -24,11 +25,12 @@ export default homeStyles = StyleSheet.create({
         alignItems: 'center',
     }, searchBar: {
         width: screenWidth / 1.25,
-    }, 
-    shelvesView: {
+    },
+    notebookView: {
         flex: 7,
         alignItems: 'center',
+
         // backgroundColor: 'white',
-        
+
     }
 })

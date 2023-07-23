@@ -1,6 +1,6 @@
 import {View, Text, FlatList} from 'react-native';
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+// import {useDispatch, useSelector} from 'react-redux';
 // import i18next from '../../services/i18next';
 // import {setPhoneLanguage, setTranslation} from '../../redux/notebookShelfStore';
 // import {useTranslation} from 'react-i18next';
@@ -17,16 +17,16 @@ const HomeScreen = () => {
 
   const onChangeSearch = query => setSearchQuery(query);
 
-const renderShelf = ({item}) => <Shelf shelfName={item} />;
-    const shelfNames = [
-      'Shelf 1',
-      'Shelf 2',
-      'Shelf 3',
-      'Shelf 4',
-      'Shelf 5',
-      'Shelf 6',
-    ];
-    
+  const renderShelf = ({item}) => <Shelf shelfName={item} />;
+  const shelfNames = [
+    'Shelf 1',
+    'Shelf 2',
+    'Shelf 3',
+    'Shelf 4',
+    'Shelf 5',
+    'Shelf 6',
+  ];
+
   // const dispatch = useDispatch();
   // const {phoneLanguage} = useSelector(state => state.notebookShelf);
 
@@ -70,7 +70,7 @@ const renderShelf = ({item}) => <Shelf shelfName={item} />;
         />
       </View>
       <View></View>
-      <FloatingButton />
+      <FloatingButton iconName={'bookshelf'} />
     </View>
   );
 };
