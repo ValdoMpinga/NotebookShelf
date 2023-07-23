@@ -6,7 +6,13 @@ const screenWidth = Dimensions.get('window').width;
 const textInputWidth = screenWidth / 1.20;
 
 
-const globalStyles = StyleSheet.create({
+export default globalStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.blue2,
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
     logoView: {
         // backgroundColor: 'red',
         flex: 2,
@@ -22,6 +28,7 @@ const globalStyles = StyleSheet.create({
         fontFamily: 'Monaco',
         fontSize: 24,
         color: Colors.white,
+        marginTop: 20,
     },
     textInputView: {
         width: textInputWidth,
@@ -59,4 +66,3 @@ const globalStyles = StyleSheet.create({
     },
 })
 
-export default globalStyles

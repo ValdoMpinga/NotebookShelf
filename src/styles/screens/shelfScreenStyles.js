@@ -29,8 +29,5 @@ export default shelfScreenStyles = StyleSheet.create({
     notebookView: {
         flex: 7,
         alignItems: 'center',
-
-        // backgroundColor: 'white',
-
     }
 })

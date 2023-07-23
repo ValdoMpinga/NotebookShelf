@@ -13,8 +13,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import ShelfScreen from './src/screens/ShelfScreen';
-
-
+import ShelfCreateUpdateScreen from './src/screens/ShelfCreateUpdateScreen';
+import SaveScanScreen from './src/screens/SaveScanScreen';
 const Stack = createNativeStackNavigator();
 
 const theme = {
@@ -31,7 +31,7 @@ function App() {
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="home" component={ShelfScreen} options={{}} />
+            <Stack.Screen name="home" component={SaveScanScreen} options={{}} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
