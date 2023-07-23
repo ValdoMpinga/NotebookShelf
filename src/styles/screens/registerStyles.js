@@ -1,39 +1,45 @@
 // styles.js
-import { StyleSheet } from 'react-native';
-import Colors from '../utils/constants';
+import { StyleSheet, Dimensions } from 'react-native';
+import Colors from '../../utils/constants';
 
-const loginStyles = StyleSheet.create({
+
+const registerStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.blue2,
         flexDirection: 'column'
     },
-    logoView: { 
+    logoView: {
         // backgroundColor: 'red',
-        flex: 2,
+        flex: 1,
         paddingTop: 20
     },
-
-    loginView: {
+    registerView: {
         // backgroundColor: 'green',
         flex: 1,
         justifyContent: 'center',
         flexDirection: 'row',
     },
-    login: {
+    register: {
         fontFamily: 'Monaco',
         fontSize: 24,
         color: Colors.white,
     },
-    controlsView: { 
-        // backgroundColor: 'yellow',
+    controlsView: {
         flex: 5,
+        alignItems: 'center',
     },
-    loginOptionsView: {
+    registerOptionsView: {
         // backgroundColor: 'purple',
         flex: 3,
+        alignItems: 'center',
+    },
+    registerOption: {
+        fontSize: 18,
+        color: Colors.white,
+        marginTop: 24,
 
     }
-});
+})
 
-export default loginStyles;
+export default registerStyles;
