@@ -1,23 +1,32 @@
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 // import i18next from '../../services/i18next';
 // import {setPhoneLanguage, setTranslation} from '../../redux/notebookShelfStore';
 // import {useTranslation} from 'react-i18next';
 // import * as RNLocalize from 'react-native-localize';
-import {FAB} from 'react-native-paper';
 import Logo from '../components/Logo';
 import globalStyles from '../styles/components/globalStyle';
 import homeStyles from '../styles/screens/homeStyles';
 import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
-import Notebook from '../components/Notebook';
+import FloatingButton from '../components/FloatingButton';
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
 
+const renderShelf = ({item}) => <Shelf shelfName={item} />;
+    const shelfNames = [
+      'Shelf 1',
+      'Shelf 2',
+      'Shelf 3',
+      'Shelf 4',
+      'Shelf 5',
+      'Shelf 6',
+    ];
+    
   // const dispatch = useDispatch();
   // const {phoneLanguage} = useSelector(state => state.notebookShelf);
 
@@ -36,8 +45,13 @@ const HomeScreen = () => {
 
   return (
     <View style={homeStyles.container}>
-      <View style={globalStyles.logoView}>
+      <View style={homeStyles.logoView}>
         <Logo />
+      </View>
+      {/* <Text>HomeScreen {phoneLanguage} </Text> */}
+
+      <View style={homeStyles.homeTitleView}>
+        <Text style={globalStyles.title}>Shelves</Text>
       </View>
 
       <View style={homeStyles.searchBarView}>
@@ -48,19 +62,15 @@ const HomeScreen = () => {
           style={homeStyles.searchBar}
         />
       </View>
-      {/* <Text>HomeScreen {phoneLanguage} </Text> */}
-
-      {/* <Shelf
-        shelfName={"School notebooks"} /> */}
-
-      {/* <Notebook
-        notebookName={'Human-Machine interaction'}
-        numberOfPages={345}
-      /> */}
-      <Notebook
-        notebookName={'Human-Machine interaction interaction'}
-        numberOfPages={345}
-      />
+      <View style={homeStyles.shelvesView}>
+        <FlatList
+          data={shelfNames}
+          renderItem={renderShelf}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+      <View></View>
+      <FloatingButton />
     </View>
   );
 };

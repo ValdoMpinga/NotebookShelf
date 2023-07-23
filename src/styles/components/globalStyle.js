@@ -37,7 +37,7 @@ const globalStyles = StyleSheet.create({
         marginTop: 30
     },
     logoView: {
-        // backgroundColor: 'red',
+        backgroundColor: 'red',
         flex: 2,
         paddingTop: 20
     },

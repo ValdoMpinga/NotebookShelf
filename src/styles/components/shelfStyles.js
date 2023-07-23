@@ -11,6 +11,7 @@ export default shelfStyles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.orange,
         flexDirection: 'row',
+        marginBottom: 30
     },
     shelfNameView: {
         flex: 4,
@@ -33,5 +34,6 @@ export default shelfStyles = StyleSheet.create({
         justifyContent: 'center',
 
     },
+    
 
 })

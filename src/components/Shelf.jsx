@@ -7,7 +7,7 @@ import Colors from '../utils/constants';
 
 const Shelf = ({shelfName}) => {
   return (
-    <View style={shelfStyles.shelf}>
+    <TouchableOpacity style={shelfStyles.shelf}>
       <View style={shelfStyles.shelfNameView}>
         <Text style={shelfStyles.shelfName}>{shelfName}</Text>
       </View>
@@ -21,7 +21,7 @@ const Shelf = ({shelfName}) => {
           <AntDesign name="delete" size={33} color={Colors.red} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

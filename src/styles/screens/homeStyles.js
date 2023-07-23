@@ -1,7 +1,6 @@
 // styles.js
 import { StyleSheet, Dimensions } from 'react-native';
 import Colors from '../../utils/constants';
-
 const screenWidth = Dimensions.get('window').width;
 
 export default homeStyles = StyleSheet.create({
@@ -10,15 +9,25 @@ export default homeStyles = StyleSheet.create({
         backgroundColor: Colors.blue2,
         flexDirection: 'column'
     },
-    searchBarView: {
+    logoView: {
         flex: 1,
+        paddingTop: 30,
+    },
+    homeTitleView: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 20,
+
+    },
+    searchBarView: {
+        flex: 2,
         alignItems: 'center',
     }, searchBar: {
         width: screenWidth / 1.25,
-    }, fab: {
-        position: 'absolute',
-        margin: 16,
-        right: 0,
-        bottom: 0,
+    }, 
+    shelvesView: {
+        flex: 7,
+        alignItems: 'center',
+        
     }
 })
