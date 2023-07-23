@@ -10,7 +10,8 @@ import Logo from '../components/Logo';
 import globalStyles from '../styles/components/globalStyle';
 import homeStyles from '../styles/screens/homeStyles';
 import {Searchbar} from 'react-native-paper';
-import icon from 'react-native-vector-icons/Feather'; 
+import Shelf from '../components/Shelf';
+import Notebook from '../components/Notebook';
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -49,6 +50,17 @@ const HomeScreen = () => {
       </View>
       {/* <Text>HomeScreen {phoneLanguage} </Text> */}
 
+      {/* <Shelf
+        shelfName={"School notebooks"} /> */}
+
+      {/* <Notebook
+        notebookName={'Human-Machine interaction'}
+        numberOfPages={345}
+      /> */}
+      <Notebook
+        notebookName={'Human-Machine interaction interaction'}
+        numberOfPages={345}
+      />
     </View>
   );
 };

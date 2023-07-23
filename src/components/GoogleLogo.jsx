@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign'; // Assuming you have FontAwesome icons available
+import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../utils/constants';
 
 const GoogleLogo = () => {
