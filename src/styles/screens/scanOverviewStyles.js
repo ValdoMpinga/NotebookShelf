@@ -6,8 +6,7 @@ const textInputWidth = screenWidth / 1.20;
 
 export default scanOverviewStyles = StyleSheet.create({
     selectedImageContainer: {
-        flex: 4,
-        // backgroundColor: 'red',
+        flex: 6,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -15,21 +14,35 @@ export default scanOverviewStyles = StyleSheet.create({
         width: 300, // Set the width of your image
         height: 400, // Set the height of your image
     },
-    rowContainer: {
+    controlsContainer: {
+        flex: 2,
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        // backgroundColor:  'red',
-        marginTop: 20,
+        margin: 20
+
+    },
+
+    imagesListContainer: {
+        // backgroundColor: 'red',
+        flex: 2,
+        width: screenWidth/1.27,
+
     },
     smallImageContainer: {
         width: 80,
         height: 80,
-        borderRadius: 5,
-        overflow: 'hidden',
+        marginRight: 5,
+        // overflow: 'hidden',
     },
     smallImage: {
         width: 80,
         height: 80,
+    },
+    activeSmallImageContainer: {
+        width: 80,
+        height: 80,
+        borderRadius: 3,
+        backgroundColor: 'red',
+        marginRight: 5,
+        overflow: 'hidden',
     },
 });

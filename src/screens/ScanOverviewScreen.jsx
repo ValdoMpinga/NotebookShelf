@@ -1,50 +1,75 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
+import CustomButton from '../components/CustomButton';
+import Colors from '../utils/constants';
 
 const ScanOverviewScreen = () => {
   const images = [
-    'https://via.placeholder.com/150', // Placeholder image URL
-    'https://via.placeholder.com/200', // Placeholder image URL
-    'https://via.placeholder.com/250', // Placeholder image URL
-    'https://via.placeholder.com/300', // Placeholder image URL
-    'https://via.placeholder.com/350', // Placeholder image URL
-    'https://via.placeholder.com/400', // Placeholder image URL
-    'https://via.placeholder.com/450', // Placeholder image URL
-    'https://via.placeholder.com/500', // Placeholder image URL
-    'https://via.placeholder.com/550', // Placeholder image URL
-    'https://via.placeholder.com/600', // Placeholder image URL
+    'https://via.placeholder.com/150',
+    'https://via.placeholder.com/200',
+    'https://via.placeholder.com/250',
+    'https://via.placeholder.com/300',
+    'https://via.placeholder.com/350',
+    'https://via.placeholder.com/400',
+    'https://via.placeholder.com/450',
+    'https://via.placeholder.com/500',
+    'https://via.placeholder.com/550',
+    'https://via.placeholder.com/600',
   ];
 
   const [imageUrls, setImageUrls] = useState(images);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[3]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(3);
 
-  const handleImageClick = imageUrl => {
-    setSelectedImageUrl(imageUrl);
+ const handleImageClick = (imageUrl, index) => {
+   setSelectedImageUrl(imageUrl);
+   setSelectedImageIndex(index);
+ };
+
+  const renderSmallImage = ({item, drag, isActive}) => {
+    const imageContainerStyle = isActive
+      ? {
+          ...scanOverviewStyles.activeSmallImageContainer,
+          backgroundColor: 'green',
+          borderRadius: 3,
+        }
+      : scanOverviewStyles.smallImageContainer;
+
+    return (
+      <TouchableOpacity
+        style={imageContainerStyle}
+        onPress={() => handleImageClick(item)}
+        onLongPress={drag}>
+        <Image
+          source={{uri: item}}
+          style={scanOverviewStyles.smallImage}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    );
   };
-
-  const renderSmallImage = ({item, drag, isActive}) => (
-    <TouchableOpacity
-      style={
-        isActive
-          ? scanOverviewStyles.activeSmallImageContainer
-          : scanOverviewStyles.smallImageContainer
-      }
-      onPress={() => handleImageClick(item)}
-      onLongPress={drag}>
-      <Image
-        source={{uri: item}}
-        style={scanOverviewStyles.smallImage}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
-  );
 
   const reorderImages = ({data}) => {
-    setImageUrls(data.map(item => item.url)); // Update the imageUrls state with the new order
+    setImageUrls(data.map(item => item));
   };
+
+  const renderControlButton = (title, color, marginLeft = 0) => (
+    <CustomButton
+      onPress={() => {}}
+      title={title}
+      customButtonStyle={{
+        backgroundColor: Colors.white,
+        borderColor: color,
+        marginTop: 30,
+        marginLeft: marginLeft,
+        width: 140,
+      }}
+      customTextStyle={{color: color, fontSize: 18}}
+    />
+  );
 
   return (
     <View style={globalStyle.container}>
@@ -56,15 +81,21 @@ const ScanOverviewScreen = () => {
           resizeMode="contain"
         />
       </View>
-      <DraggableFlatList
-        horizontal
-        data={images}
-        renderItem={renderSmallImage}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={scanOverviewStyles.rowContainer}
-        onDragEnd={reorderImages}
-        showsHorizontalScrollIndicator={false}
-      />
+      <View style={scanOverviewStyles.controlsContainer}>
+        {renderControlButton('Add scan', Colors.blue1)}
+        {renderControlButton('Save Scans', Colors.orange, 30)}
+      </View>
+
+      <View style={scanOverviewStyles.imagesListContainer}>
+        <DraggableFlatList
+          horizontal
+          data={imageUrls}
+          renderItem={renderSmallImage}
+          keyExtractor={(_, index) => index.toString()}
+          onDragEnd={reorderImages}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };
