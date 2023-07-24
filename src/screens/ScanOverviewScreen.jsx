@@ -1,9 +1,11 @@
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
+import DraggableFlatList from 'react-native-draggable-flatlist';
+
 const ScanOverviewScreen = () => {
-  const imageUrls = [
+  const images = [
     'https://via.placeholder.com/150', // Placeholder image URL
     'https://via.placeholder.com/200', // Placeholder image URL
     'https://via.placeholder.com/250', // Placeholder image URL
@@ -16,17 +18,22 @@ const ScanOverviewScreen = () => {
     'https://via.placeholder.com/600', // Placeholder image URL
   ];
 
+  const [imageUrls, setImageUrls] = useState(images);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[3]);
 
   const handleImageClick = imageUrl => {
     setSelectedImageUrl(imageUrl);
   };
-    
-    
-  const renderSmallImage = ({item}) => (
+
+  const renderSmallImage = ({item, drag, isActive}) => (
     <TouchableOpacity
-      style={scanOverviewStyles.smallImageContainer}
-      onPress={() => handleImageClick(item)}>
+      style={
+        isActive
+          ? scanOverviewStyles.activeSmallImageContainer
+          : scanOverviewStyles.smallImageContainer
+      }
+      onPress={() => handleImageClick(item)}
+      onLongPress={drag}>
       <Image
         source={{uri: item}}
         style={scanOverviewStyles.smallImage}
@@ -34,6 +41,10 @@ const ScanOverviewScreen = () => {
       />
     </TouchableOpacity>
   );
+
+  const reorderImages = ({data}) => {
+    setImageUrls(data.map(item => item.url)); // Update the imageUrls state with the new order
+  };
 
   return (
     <View style={globalStyle.container}>
@@ -45,17 +56,17 @@ const ScanOverviewScreen = () => {
           resizeMode="contain"
         />
       </View>
-      <FlatList
+      <DraggableFlatList
         horizontal
-        data={imageUrls}
+        data={images}
         renderItem={renderSmallImage}
-        keyExtractor={item => item}
+        keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={scanOverviewStyles.rowContainer}
+        onDragEnd={reorderImages}
         showsHorizontalScrollIndicator={false}
       />
     </View>
   );
 };
-
 
 export default ScanOverviewScreen;

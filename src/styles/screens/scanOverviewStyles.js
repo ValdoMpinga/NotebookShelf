@@ -19,6 +19,7 @@ export default scanOverviewStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        // backgroundColor:  'red',
         marginTop: 20,
     },
     smallImageContainer: {
@@ -28,7 +29,7 @@ export default scanOverviewStyles = StyleSheet.create({
         overflow: 'hidden',
     },
     smallImage: {
-        width: '100%',
-        height: '100%',
+        width: 80,
+        height: 80,
     },
 });

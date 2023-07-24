@@ -2,12 +2,12 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import Store from './redux/store';
 import {NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { PaperProvider } from 'react-native-paper';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
-  Provider as PaperProvider,
-  DefaultTheme,
-} from 'react-native-paper';
+  GestureHandlerRootView,
+  gestureHandlerRootHOC,
+} from 'react-native-gesture-handler';
+import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
 
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
@@ -31,15 +31,17 @@ function App() {
   return (
     <Provider store={Store}>
       <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen
-              name="home"
-              component={ScanOverviewScreen}
-              options={{}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <GestureHandlerRootView style={{flex:1 }}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Screen
+                name="home"
+                component={ScanOverviewScreen}
+                options={{}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </GestureHandlerRootView>
       </PaperProvider>
     </Provider>
   );
