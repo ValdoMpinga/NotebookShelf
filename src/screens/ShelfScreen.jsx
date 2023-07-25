@@ -6,7 +6,6 @@ import homeStyles from '../styles/screens/homeStyles';
 import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 const ShelfScreen = () => {

@@ -14,7 +14,7 @@ export default homeStyles = StyleSheet.create({
         paddingTop: 30,
     },
     homeTitleView: {
-        flex: 1,
+        flex: 1.5,
         alignItems: 'center',
         paddingTop: 20,
 

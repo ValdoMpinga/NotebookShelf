@@ -45,9 +45,9 @@ const HomeScreen = () => {
 
   return (
     <View style={homeStyles.container}>
-      <View style={homeStyles.logoView}>
+      {/* <View style={homeStyles.logoView}>
         <Logo />
-      </View>
+      </View> */}
       {/* <Text>HomeScreen {phoneLanguage} </Text> */}
 
       <View style={homeStyles.homeTitleView}>
