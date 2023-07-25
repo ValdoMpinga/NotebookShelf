@@ -15,6 +15,7 @@ import ShelfCreateUpdateScreen from './src/screens/ShelfCreateUpdateScreen';
 import SaveScanScreen from './src/screens/SaveScanScreen';
 import ScanOverviewScreen from './src/screens/ScanOverviewScreen';
 import SideMenu from './src/components/SideMenu';
+import TutorialScreen from './src/screens/TutorialScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,10 +61,10 @@ function App() {
               drawerContent={props => <SideMenu {...props} />}>
               <Drawer.Screen
                 name="Home"
-                component={HomeScreen}
+                component={TutorialScreen}
                 options={{
                   headerShown: true,
-                  headerStyle: { backgroundColor: Colors.blue2}
+                  headerStyle: {backgroundColor: Colors.blue2},
                 }}
               />
               {/* Add other screens here */}

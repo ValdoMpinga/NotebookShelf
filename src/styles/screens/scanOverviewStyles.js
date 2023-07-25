@@ -11,8 +11,8 @@ export default scanOverviewStyles = StyleSheet.create({
         alignItems: 'center',
     },
     selectedImage: {
-        width: 300, // Set the width of your image
-        height: 400, // Set the height of your image
+        width: 300,
+        height: 400, 
     },
     controlsContainer: {
         flex: 2,
