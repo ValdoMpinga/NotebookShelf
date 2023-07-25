@@ -9,7 +9,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'; import 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const SideMenu = () => {
+const SideMenu = ({props, navigation}) => {
   return (
     <View style={sideMenuStyles.container}>
       <View style={sideMenuStyles.header}>
@@ -21,6 +21,7 @@ const SideMenu = () => {
       </View>
       <View style={sideMenuStyles.body}>
         <SideMenuItem
+          
           icon={<Feather name="user" size={35} color={Colors.blue2} />}
           menuName={'Profile'}
         />
@@ -43,6 +44,9 @@ const SideMenu = () => {
         <SideMenuItem
           icon={<AntDesign name="bulb1" size={35} color={Colors.blue2} />}
           menuName={'Tutorial'}
+          onMenuItemClick={() => {
+            navigation.navigate('Tutorial');
+          }}
         />
         <SideMenuItem
           icon={

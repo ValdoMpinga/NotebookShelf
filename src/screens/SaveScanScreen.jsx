@@ -27,7 +27,7 @@ export default function SaveScanScreen() {
 
   return (
     <View style={globalStyle.container}>
-      <Text style={globalStyle.title}>Scan Review</Text>
+      {/* <Text style={globalStyle.title}>Scan Review</Text> */}
 
       <View style={saveScanStyles.controls}>
         <View style={globalStyles.textInputView}>

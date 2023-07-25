@@ -6,7 +6,7 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
 import Colors from '../utils/constants';
 
-const ScanOverviewScreen = () => {
+const ScanOverviewScreen = ({navigation}) => {
   const images = [
     'https://via.placeholder.com/150',
     'https://via.placeholder.com/200',
@@ -56,9 +56,9 @@ const ScanOverviewScreen = () => {
     setImageUrls(data.map(item => item));
   };
 
-  const renderControlButton = (title, color, marginLeft = 0) => (
+  const renderControlButton = (title, color, marginLeft = 0,onButtonClick) => (
     <CustomButton
-      onPress={() => {}}
+      onPress={() => {onButtonClick()}}
       title={title}
       customButtonStyle={{
         backgroundColor: Colors.white,
@@ -73,7 +73,7 @@ const ScanOverviewScreen = () => {
 
   return (
     <View style={globalStyle.container}>
-      <Text style={globalStyle.title}>Scan Overview</Text>
+      {/* <Text style={globalStyle.title}>Scan Overview</Text> */}
       <View style={scanOverviewStyles.selectedImageContainer}>
         <Image
           source={{uri: selectedImageUrl}}
@@ -82,8 +82,8 @@ const ScanOverviewScreen = () => {
         />
       </View>
       <View style={scanOverviewStyles.controlsContainer}>
-        {renderControlButton('Add scan', Colors.blue1)}
-        {renderControlButton('Save Scans', Colors.orange, 30)}
+        {renderControlButton('Add scan', Colors.blue1, 0)}
+        {renderControlButton('Save Scans', Colors.orange, 30, () => {navigation.navigate('SaveScan');})}
       </View>
 
       <View style={scanOverviewStyles.imagesListContainer}>

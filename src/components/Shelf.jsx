@@ -5,9 +5,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../utils/constants';
 
-const Shelf = ({shelfName}) => {
+const Shelf = ({shelfName, navigation}) => {
   return (
-    <TouchableOpacity style={shelfStyles.shelf}>
+    <TouchableOpacity
+      style={shelfStyles.shelf}
+      onPress={() => {
+        navigation.navigate('Shelf');
+      }}>
       <View style={shelfStyles.shelfNameView}>
         <Text style={shelfStyles.shelfName}>{shelfName}</Text>
       </View>

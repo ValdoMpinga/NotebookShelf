@@ -8,7 +8,7 @@ import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
 import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
-const ShelfScreen = () => {
+const ShelfScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
@@ -30,9 +30,9 @@ const ShelfScreen = () => {
 
   return (
     <View style={shelfScreenStyles.container}>
-      <View style={shelfScreenStyles.logoView}>
+      {/* <View style={shelfScreenStyles.logoView}>
         <Logo />
-      </View>
+      </View> */}
       {/* <Text>HomeScreen {phoneLanguage} </Text> */}
 
       <View style={shelfScreenStyles.titleView}>
@@ -57,7 +57,10 @@ const ShelfScreen = () => {
         />
       </View>
       <View></View>
-      <FloatingButton iconName={'line-scan'} />
+      <FloatingButton
+        iconName={'line-scan'}
+      onButtonClick={()=>{navigation.navigate('ScanOverview')}}
+      />
     </View>
   );
 };

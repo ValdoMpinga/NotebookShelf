@@ -12,12 +12,14 @@ import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
 
-  const renderShelf = ({item}) => <Shelf shelfName={item} />;
+  const renderShelf = ({item}) => (
+    <Shelf navigation={navigation} shelfName={item} />
+  );
   const shelfNames = [
     'Shelf 1',
     'Shelf 2',
@@ -45,11 +47,6 @@ const HomeScreen = () => {
 
   return (
     <View style={homeStyles.container}>
-      {/* <View style={homeStyles.logoView}>
-        <Logo />
-      </View> */}
-      {/* <Text>HomeScreen {phoneLanguage} </Text> */}
-
       <View style={homeStyles.homeTitleView}>
         <Text style={globalStyles.title}>Shelves</Text>
       </View>
@@ -66,11 +63,15 @@ const HomeScreen = () => {
         <FlatList
           data={shelfNames}
           renderItem={renderShelf}
+      
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
       <View></View>
-      <FloatingButton iconName={'bookshelf'} />
+      <FloatingButton
+        iconName={'bookshelf'}
+      onButtonClick={()=>{navigation.navigate('ShelfCreateUpdate');}}
+      />
     </View>
   );
 };
