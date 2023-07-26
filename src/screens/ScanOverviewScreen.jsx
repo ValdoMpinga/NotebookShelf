@@ -5,6 +5,7 @@ import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
 import Colors from '../utils/constants';
+import {useDispatch, useSelector} from 'react-redux';
 
 const ScanOverviewScreen = ({navigation}) => {
   const images = [
@@ -20,14 +21,17 @@ const ScanOverviewScreen = ({navigation}) => {
     'https://via.placeholder.com/600',
   ];
 
-  const [imageUrls, setImageUrls] = useState(images);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[3]);
+    const {scannedImages} = useSelector(state => state.notebookShelf);
+
+
+  const [imageUrls, setImageUrls] = useState(scannedImages);
+  const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(3);
 
- const handleImageClick = (imageUrl, index) => {
-   setSelectedImageUrl(imageUrl);
-   setSelectedImageIndex(index);
- };
+  const handleImageClick = (imageUrl, index) => {
+    setSelectedImageUrl(imageUrl);
+    setSelectedImageIndex(index);
+  };
 
   const renderSmallImage = ({item, drag, isActive}) => {
     const imageContainerStyle = isActive
@@ -56,9 +60,11 @@ const ScanOverviewScreen = ({navigation}) => {
     setImageUrls(data.map(item => item));
   };
 
-  const renderControlButton = (title, color, marginLeft = 0,onButtonClick) => (
+  const renderControlButton = (title, color, marginLeft = 0, onButtonClick) => (
     <CustomButton
-      onPress={() => {onButtonClick()}}
+      onPress={() => {
+        onButtonClick();
+      }}
       title={title}
       customButtonStyle={{
         backgroundColor: Colors.white,
@@ -83,7 +89,9 @@ const ScanOverviewScreen = ({navigation}) => {
       </View>
       <View style={scanOverviewStyles.controlsContainer}>
         {renderControlButton('Add scan', Colors.blue1, 0)}
-        {renderControlButton('Save Scans', Colors.orange, 30, () => {navigation.navigate('SaveScan');})}
+        {renderControlButton('Save Scans', Colors.orange, 30, () => {
+          navigation.navigate('SaveScan');
+        })}
       </View>
 
       <View style={scanOverviewStyles.imagesListContainer}>

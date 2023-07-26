@@ -6,6 +6,7 @@ const notebookShelfSlice = createSlice(
         initialState: {
             phoneLanguage: 'en',
             t: undefined,
+            scannedImages: []
         },
         reducers: {
             setPhoneLanguage(state, action)
@@ -15,12 +16,15 @@ const notebookShelfSlice = createSlice(
             setTranslation(state, action)
             {
                 state.t = action.payload;
-
-            }
+            },
+            setScannedImages(state, action)
+            {
+                state.scannedImages = [...state.scannedImages,action.payload]
+            },
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation} = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation,setScannedImages} = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer
