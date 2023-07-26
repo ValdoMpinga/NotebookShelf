@@ -67,13 +67,4 @@ const SideMenu = ({props, navigation}) => {
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: Colors.orange,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
 export default SideMenu;

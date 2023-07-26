@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import { TouchableOpacity} from 'react-native';
 import {Provider} from 'react-redux';
 import Store from './redux/store';
 import {NavigationContainer} from '@react-navigation/native';
