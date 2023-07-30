@@ -1,16 +1,16 @@
 import {View, Text, FlatList} from 'react-native';
 import React, {useEffect} from 'react';
-// import {useDispatch, useSelector} from 'react-redux';
-// import i18next from '../../services/i18next';
-// import {setPhoneLanguage, setTranslation} from '../../redux/notebookShelfStore';
-// import {useTranslation} from 'react-i18next';
-// import * as RNLocalize from 'react-native-localize';
-import Logo from '../components/Logo';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setShelves,
+} from '../../redux/notebookShelfStore';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import globalStyles from '../styles/components/globalStyle';
 import homeStyles from '../styles/screens/homeStyles';
 import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
+import { supabase } from '../database/connection';
 
 const HomeScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -18,32 +18,30 @@ const HomeScreen = ({navigation}) => {
   const onChangeSearch = query => setSearchQuery(query);
 
   const renderShelf = ({item}) => (
-    <Shelf navigation={navigation} shelfName={item} />
+    <Shelf navigation={navigation} shelfName={item.name} shelfId={item.id} /> 
   );
-  const shelfNames = [
-    'Shelf 1',
-    'Shelf 2',
-    'Shelf 3',
-    'Shelf 4',
-    'Shelf 5',
-    'Shelf 6',
-  ];
 
-  // const dispatch = useDispatch();
-  // const {phoneLanguage} = useSelector(state => state.notebookShelf);
+  const dispatch = useDispatch();
+  const {shelves} = useSelector(state => state.notebookShelf);
 
-  // const {t} = useTranslation();
+  useEffect(() => {
+    getShelves(supabase);
+  }, []);
 
-  // useEffect(() => {
-  //   const preferredLanguages = RNLocalize.getLocales();
-  //   console.log(preferredLanguages[0].countryCode.toLowerCase());
-  //   dispatch(setPhoneLanguage(preferredLanguages[0].countryCode.toLowerCase()));
-  //   dispatch(setTranslation(t));
+  async function getShelves(supabase) {
+    const {data} = await supabase.from('Shelf').select('*');
+    dispatch(setShelves(data));
+  }
 
-  //   if (preferredLanguages && preferredLanguages.length > 0) {
-  //     i18next.changeLanguage(phoneLanguage);
-  //   }
-  // }, []);
+  // Conditionally render text and icon if shelves is an empty array
+  if (shelves.length === 0 ) {
+    return (
+      <View style={homeStyles.centeredContainer}>
+        <Text style={homeStyles.emptyText}>No shelves found</Text>
+        <Icon name="bookshelf" size={24} color="black" />
+      </View>
+    );
+  }
 
   return (
     <View style={homeStyles.container}>
@@ -61,16 +59,17 @@ const HomeScreen = ({navigation}) => {
       </View>
       <View style={homeStyles.shelvesView}>
         <FlatList
-          data={shelfNames}
+          data={shelves}
           renderItem={renderShelf}
-      
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={item => item.id}
         />
       </View>
       <View></View>
       <FloatingButton
         iconName={'bookshelf'}
-      onButtonClick={()=>{navigation.navigate('ShelfCreateUpdate');}}
+        onButtonClick={() => {
+          navigation.navigate('ShelfCreateUpdate',{});
+        }}
       />
     </View>
   );

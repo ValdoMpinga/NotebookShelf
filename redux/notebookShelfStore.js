@@ -6,7 +6,9 @@ const notebookShelfSlice = createSlice(
         initialState: {
             phoneLanguage: 'en',
             t: undefined,
-            scannedImages: []
+            scannedImagesArray: [],
+            shelves: [],
+            notebooks: [],
         },
         reducers: {
             setPhoneLanguage(state, action)
@@ -19,12 +21,26 @@ const notebookShelfSlice = createSlice(
             },
             setScannedImages(state, action)
             {
-                state.scannedImages = [...state.scannedImages,action.payload]
+                if (Array.isArray(action.payload))
+                {
+                    state.scannedImagesArray = state.scannedImagesArray.concat(action.payload);
+                } else
+                {
+                    state.scannedImagesArray.push(action.payload);
+                }
+            },
+            setShelves(state, action)
+            {
+                state.shelves = action.payload;
+            },
+            setNotebook(state, action)
+            {
+                state.notebooks = action.payload;
             },
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation,setScannedImages} = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer

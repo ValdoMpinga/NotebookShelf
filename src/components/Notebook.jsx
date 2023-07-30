@@ -4,8 +4,8 @@ import notebookStyle from '../styles/components/notebookStyle';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../utils/constants';
-
-const Notebook = ({notebookName, numberOfPages}) => {
+import yesOrNoAlert from '../utils/yesOrNoAlert';
+const Notebook = ({notebookName, numberOfPages, notebookId}) => {
   return (
     <TouchableOpacity>
       <View style={notebookStyle.container}>
@@ -19,7 +19,16 @@ const Notebook = ({notebookName, numberOfPages}) => {
           <TouchableOpacity onPress={() => {}}>
             <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() =>
+          {
+            yesOrNoAlert(
+              'Warning',
+              'Are you sure you want to delete this notebook',
+              () => {
+                console.log(`Notebook ${notebookId} deleted successfully`);
+              },
+            );
+          }}>
             <AntDesign name="delete" size={33} color={Colors.red} />
           </TouchableOpacity>
         </View>

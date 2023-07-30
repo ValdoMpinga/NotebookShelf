@@ -1,36 +1,36 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Image, TouchableOpacity} from 'react-native';
 import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
 import Colors from '../utils/constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import DocumentScanner from 'react-native-document-scanner-plugin';
+import {setScannedImages} from '../../redux/notebookShelfStore';
 
 const ScanOverviewScreen = ({navigation}) => {
-  const images = [
-    'https://via.placeholder.com/150',
-    'https://via.placeholder.com/200',
-    'https://via.placeholder.com/250',
-    'https://via.placeholder.com/300',
-    'https://via.placeholder.com/350',
-    'https://via.placeholder.com/400',
-    'https://via.placeholder.com/450',
-    'https://via.placeholder.com/500',
-    'https://via.placeholder.com/550',
-    'https://via.placeholder.com/600',
-  ];
+  const {scannedImagesArray} = useSelector(state => state.notebookShelf);
+  const dispatch = useDispatch();
 
-    const {scannedImages} = useSelector(state => state.notebookShelf);
-
-
-  const [imageUrls, setImageUrls] = useState(scannedImages);
+  const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(3);
-
+ 
   const handleImageClick = (imageUrl, index) => {
     setSelectedImageUrl(imageUrl);
-    setSelectedImageIndex(index);
+  };
+
+  const scanDocument = async () => {
+    try {
+      // start the document scanner
+      const {scannedImages} = await DocumentScanner.scanDocument();
+      dispatch(setScannedImages(scannedImages[0]));
+      // navigation.navigate('ScanOverview');
+    } catch (e)
+    {
+      console.log('some error occured:');
+      console.log(e);
+    }
   };
 
   const renderSmallImage = ({item, drag, isActive}) => {
@@ -41,7 +41,13 @@ const ScanOverviewScreen = ({navigation}) => {
           borderRadius: 3,
         }
       : scanOverviewStyles.smallImageContainer;
-
+      
+    
+    useEffect(() =>
+    {
+      console.log(scannedImagesArray);
+      setImageUrls(scannedImagesArray)
+    }, [scannedImagesArray]);
     return (
       <TouchableOpacity
         style={imageContainerStyle}
@@ -77,6 +83,7 @@ const ScanOverviewScreen = ({navigation}) => {
     />
   );
 
+  useEffect(() => {}, [scannedImagesArray]);
   return (
     <View style={globalStyle.container}>
       {/* <Text style={globalStyle.title}>Scan Overview</Text> */}
@@ -88,7 +95,9 @@ const ScanOverviewScreen = ({navigation}) => {
         />
       </View>
       <View style={scanOverviewStyles.controlsContainer}>
-        {renderControlButton('Add scan', Colors.blue1, 0)}
+        {renderControlButton('Add scan', Colors.blue1, 0, () => {
+          scanDocument();
+        })}
         {renderControlButton('Save Scans', Colors.orange, 30, () => {
           navigation.navigate('SaveScan');
         })}
