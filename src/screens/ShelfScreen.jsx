@@ -11,15 +11,13 @@ import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
-// import RNFetchBlob from 'react-native-fetch-blob';
+
 
 const ShelfScreen = ({navigation, route}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const dispatch = useDispatch();
   const {shelfId, shelfName} = route.params;
-  const {notebooks} = useSelector(
-    state => state.notebookShelf,
-  );
+  const {notebooks} = useSelector(state => state.notebookShelf);
 
   const onChangeSearch = query => setSearchQuery(query);
 

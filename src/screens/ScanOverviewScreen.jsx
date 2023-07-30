@@ -12,22 +12,55 @@ import {setScannedImages} from '../../redux/notebookShelfStore';
 const ScanOverviewScreen = ({navigation}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
+  const ipAddress = '192.168.1.212';
+  const endpointURL = `http://${ipAddress}:3000/pdf/generate`;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
- 
+
   const handleImageClick = (imageUrl, index) => {
     setSelectedImageUrl(imageUrl);
   };
 
+
+  const uploadImageToServer = async imagePath => {
+
+    const formData = new FormData();
+
+    formData.append('username', 'your_username_here'); // Replace 'your_username_here' with the actual username
+
+    const fileName = `image.jpg`;
+    formData.append('image', {
+      uri: imagePath,
+      type: 'image/jpeg',
+      name: fileName,
+    });
+
+    try
+    {
+      console.log(formData);
+      // Send the formData to the server using a POST request
+      const response = await fetch(endpointURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
   const scanDocument = async () => {
     try {
-      // start the document scanner
       const {scannedImages} = await DocumentScanner.scanDocument();
       dispatch(setScannedImages(scannedImages[0]));
-      // navigation.navigate('ScanOverview');
-    } catch (e)
-    {
+    } catch (e) {
       console.log('some error occured:');
       console.log(e);
     }
@@ -41,12 +74,10 @@ const ScanOverviewScreen = ({navigation}) => {
           borderRadius: 3,
         }
       : scanOverviewStyles.smallImageContainer;
-      
-    
-    useEffect(() =>
-    {
+
+    useEffect(() => {
       console.log(scannedImagesArray);
-      setImageUrls(scannedImagesArray)
+      setImageUrls(scannedImagesArray);
     }, [scannedImagesArray]);
     return (
       <TouchableOpacity
@@ -99,7 +130,7 @@ const ScanOverviewScreen = ({navigation}) => {
           scanDocument();
         })}
         {renderControlButton('Save Scans', Colors.orange, 30, () => {
-          navigation.navigate('SaveScan');
+          uploadImageToServer(scannedImagesArray[0]);
         })}
       </View>
 
