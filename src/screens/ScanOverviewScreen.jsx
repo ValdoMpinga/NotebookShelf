@@ -22,24 +22,22 @@ const ScanOverviewScreen = ({navigation}) => {
     setSelectedImageUrl(imageUrl);
   };
 
-
-  const uploadImageToServer = async imagePath => {
-
+  // Function to upload all images to the server
+  const uploadImagesToServer = async imagePaths => {
     const formData = new FormData();
+    formData.append('username', 'Valdo'); // Replace 'your_username_here' with the actual username
 
-    formData.append('username', 'your_username_here'); // Replace 'your_username_here' with the actual username
-
-    const fileName = `image.jpg`;
-    formData.append('image', {
-      uri: imagePath,
-      type: 'image/jpeg',
-      name: fileName,
+    imagePaths.forEach((imagePath, index) => {
+      const fileName = `image_${index}.jpg`;
+      formData.append('image', {
+        uri: imagePath,
+        type: 'image/jpeg',
+        name: fileName,
+      });
     });
 
-    try
-    {
-      console.log(formData);
-      // Send the formData to the server using a POST request
+    try {
+      // Send the formData with all images to the server using a single POST request
       const response = await fetch(endpointURL, {
         method: 'POST',
         headers: {
@@ -54,7 +52,6 @@ const ScanOverviewScreen = ({navigation}) => {
       console.error('Error:', error);
     }
   };
-
 
   const scanDocument = async () => {
     try {
@@ -130,7 +127,7 @@ const ScanOverviewScreen = ({navigation}) => {
           scanDocument();
         })}
         {renderControlButton('Save Scans', Colors.orange, 30, () => {
-          uploadImageToServer(scannedImagesArray[0]);
+          uploadImagesToServer(scannedImagesArray);
         })}
       </View>
 
