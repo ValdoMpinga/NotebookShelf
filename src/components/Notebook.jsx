@@ -7,9 +7,12 @@ import {Colors} from '../utils/constants';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
 import {okAlert} from '../utils/okAlert';
 import endpointComposer from '../utils/endpoinComposer';
-const Notebook = ({notebookName, numberOfPages, notebookId, shelfName}) => {
+const Notebook = ({notebookName, numberOfPages, notebookId, shelfName, navigation}) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() =>
+    {
+      navigation.navigate('NotebookView',{shelfName:shelfName,notebookName: notebookName });
+    }}>
       <View style={notebookStyle.container}>
         <View style={notebookStyle.notebookNameView}>
           <Text style={notebookStyle.notebookName}>{notebookName}</Text>
@@ -36,7 +39,7 @@ const Notebook = ({notebookName, numberOfPages, notebookId, shelfName}) => {
                     },
                     body: JSON.stringify({
                       shelfName: shelfName,
-                      notebookName: notebookName
+                      notebookName: notebookName,
                     }),
                   });
                   okAlert('Success', `${notebookName} deleted successfully`);

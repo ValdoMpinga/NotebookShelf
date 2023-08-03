@@ -18,7 +18,7 @@ import ScanOverviewScreen from './src/screens/ScanOverviewScreen';
 import SideMenu from './src/components/SideMenu';
 import TutorialScreen from './src/screens/TutorialScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import NotebookViewScreen from './src/screens/NotebookViewScreen';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -88,6 +88,16 @@ const HomeStack = () => {
           headerStyle: {backgroundColor: Colors.blue2},
           headerBackTitleVisible: false,
           headerTitle: 'Shelf Managment',
+        }}
+      />
+      <Stack.Screen
+        name="NotebookView"
+        component={NotebookViewScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: Colors.blue2},
+          headerBackTitleVisible: false,
+          headerTitle: 'Notebook Viewer',
         }}
       />
     </Stack.Navigator>

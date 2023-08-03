@@ -24,7 +24,7 @@ const ShelfScreen = ({navigation, route}) => {
   const onChangeSearch = query => setSearchQuery(query);
 
   const renderShelf = ({item}) => (
-    <Notebook notebookName={item} numberOfPages={0} notebookId={uuidv4()} shelfName={shelfName} />
+    <Notebook notebookName={item} numberOfPages={0} notebookId={uuidv4()} shelfName={shelfName} navigation={navigation}/>
   );
 
   const scanDocument = async () => {
