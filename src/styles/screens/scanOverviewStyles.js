@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../utils/constants';
+import {Colors} from '../../utils/constants';
 
 const screenWidth = Dimensions.get('window').width;
 const textInputWidth = screenWidth / 1.20;

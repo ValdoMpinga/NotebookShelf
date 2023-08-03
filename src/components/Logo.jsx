@@ -1,6 +1,6 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 const Logo = () => {
   return (
     <View style={{alignItems: 'center'}}>

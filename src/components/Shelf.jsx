@@ -3,10 +3,12 @@ import React from 'react';
 import shelfStyles from '../styles/components/shelfStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
+import {okAlert} from '../utils/okAlert';
+import endpointComposer from '../utils/endpoinComposer';
 
-const Shelf = ({shelfName, navigation,shelfId}) => {
+const Shelf = ({shelfName, navigation, shelfId}) => {
   return (
     <TouchableOpacity
       style={shelfStyles.shelf}
@@ -17,7 +19,13 @@ const Shelf = ({shelfName, navigation,shelfId}) => {
         <Text style={shelfStyles.shelfName}>{shelfName}</Text>
       </View>
       <View style={shelfStyles.shelfEdit}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ShelfCreateUpdate', {
+              intent: 'Update',
+              shelfName: shelfName
+            });
+          }}>
           <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
         </TouchableOpacity>
       </View>
@@ -27,8 +35,19 @@ const Shelf = ({shelfName, navigation,shelfId}) => {
             yesOrNoAlert(
               'Warning',
               'Are you sure you want to delete this shelf',
-              () =>
-              {
+              async () => {
+                let composedEndpoint = endpointComposer('delete-shelf');
+
+                const response = await fetch(composedEndpoint, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    shelfName: shelfName,
+                  }),
+                });
+                okAlert('Success', `${shelfName} deleted successfully`);
                 console.log(`Shelf ${shelfId} deleted successfully`);
               },
             );

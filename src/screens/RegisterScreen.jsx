@@ -5,7 +5,7 @@ import Logo from '../components/Logo';
 import {TextInput} from 'react-native-paper';
 import React from 'react';
 import CustomButton from '../components/CustomButton';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 import GoogleLogo from '../components/GoogleLogo';
 
 const RegisterScreen = () => {

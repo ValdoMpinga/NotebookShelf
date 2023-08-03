@@ -4,7 +4,7 @@ import saveScanStyles from '../styles/screens/saveScanStyles';
 import globalStyle from '../styles/components/globalStyle';
 import {TextInput} from 'react-native-paper';
 import CustomButton from '../components/CustomButton';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 import DropDown from 'react-native-paper-dropdown';
 
 export default function SaveScanScreen() {

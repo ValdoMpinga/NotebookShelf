@@ -1,6 +1,7 @@
 // styles.js
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../utils/constants';
+
+import { Colors } from '../../utils/constants';
 const screenWidth = Dimensions.get('window').width;
 
 export default homeStyles = StyleSheet.create({

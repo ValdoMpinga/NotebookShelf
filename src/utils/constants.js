@@ -8,4 +8,10 @@ const Colors = {
     yellow: "#FEDC5A",
 };
 
-export default Colors;
+const IP_ADDRESS = '192.168.1.241';
+
+export
+{
+    Colors,
+    IP_ADDRESS
+};

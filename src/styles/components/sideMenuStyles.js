@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../utils/constants';
+import {Colors} from '../../utils/constants';
 
 export default sideMenuStyles = StyleSheet.create({
     container: {

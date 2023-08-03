@@ -1,6 +1,6 @@
 // styles.js
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../utils/constants';
+import {Colors} from '../../utils/constants';
 
 
 const registerStyles = StyleSheet.create({

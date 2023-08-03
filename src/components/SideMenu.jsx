@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Svg, Circle, Image} from 'react-native';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 import sideMenuStyles from '../styles/components/sideMenuStyles';
 import ProfileIcon from './ProfileIcon';
 import SideMenuItem from './SideMenuItem';

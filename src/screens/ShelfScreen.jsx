@@ -11,7 +11,9 @@ import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
-
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
+import endpointComposer from '../utils/endpoinComposer';
 
 const ShelfScreen = ({navigation, route}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -22,11 +24,7 @@ const ShelfScreen = ({navigation, route}) => {
   const onChangeSearch = query => setSearchQuery(query);
 
   const renderShelf = ({item}) => (
-    <Notebook
-      notebookName={item.name}
-      numberOfPages={item.num_pages}
-      notebookId={item.id}
-    />
+    <Notebook notebookName={item} numberOfPages={0} notebookId={uuidv4()} shelfName={shelfName} />
   );
 
   const scanDocument = async () => {
@@ -41,17 +39,46 @@ const ShelfScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    getNotebooks(supabase);
+    getDropboxNotebooks('list-files-in-folder');
   }, []);
 
-  async function getNotebooks(supabase) {
-    const {data} = await supabase
-      .from('Notebook')
-      .select('*')
-      .eq('shelf_id', shelfId);
 
-    console.log(data);
-    dispatch(setNotebook(data));
+  async function getDropboxNotebooks(endpoint) {
+    try {
+      let composedEndpoint = endpointComposer(endpoint);
+      console.log(composedEndpoint);
+      const response = await fetch(composedEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shelfName: shelfName,
+        }),
+      });
+
+      // Log the response status
+      console.log('Response Status:', response.status);
+
+      if (response.ok) {
+        const responseData = await response.json(); // Change to .json() if the response is JSON
+        console.log('Processed Data:', responseData.fileNames);
+        console.log('Processed Data:', typeof responseData.fileNames);
+        const notebooks = responseData.fileNames.map(
+          element => element.split('_notebook')[0],
+        );
+
+        dispatch(setNotebook(notebooks));
+
+        return responseData; // Return the data if needed
+      } else {
+        console.error('Error:', response.statusText);
+        throw new Error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      throw error; // Re-throw the error to handle it at a higher level if needed
+    }
   }
 
   return (

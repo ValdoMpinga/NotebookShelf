@@ -4,7 +4,7 @@ import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
-import Colors from '../utils/constants';
+import {Colors, IP_ADDRESS} from '../utils/constants';
 import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import {setScannedImages} from '../../redux/notebookShelfStore';
@@ -12,8 +12,7 @@ import {setScannedImages} from '../../redux/notebookShelfStore';
 const ScanOverviewScreen = ({navigation}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
-  const ipAddress = '192.168.1.212';
-  const endpointURL = `http://${ipAddress}:3000/pdf/generate`;
+  const endpointURL = `http://${IP_ADDRESS}:3000/pdf/create-notebook`;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
@@ -25,7 +24,8 @@ const ScanOverviewScreen = ({navigation}) => {
   // Function to upload all images to the server
   const uploadImagesToServer = async imagePaths => {
     const formData = new FormData();
-    formData.append('username', 'Valdo'); // Replace 'your_username_here' with the actual username
+    formData.append('shelfName', 'Valdo'); 
+    formData.append('notebookName', 'Valdo'); 
 
     imagePaths.forEach((imagePath, index) => {
       const fileName = `image_${index}.jpg`;

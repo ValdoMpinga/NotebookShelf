@@ -4,7 +4,7 @@ import loginStyles from '../styles/screens/loginStyles';
 import Logo from '../components/Logo';
 import {TextInput} from 'react-native-paper';
 import CustomButton from '../components/CustomButton';
-import Colors from '../utils/constants';
+import {Colors} from '../utils/constants';
 import GoogleLogo from '../components/GoogleLogo';
 import globalStyles from '../styles/components/globalStyle';
 
