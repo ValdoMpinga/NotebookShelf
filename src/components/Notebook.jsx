@@ -7,6 +7,7 @@ import {Colors} from '../utils/constants';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
 import {okAlert} from '../utils/okAlert';
 import endpointComposer from '../utils/endpoinComposer';
+
 const Notebook = ({notebookName, numberOfPages, notebookId, shelfName, navigation}) => {
   return (
     <TouchableOpacity onPress={() =>
@@ -17,11 +18,18 @@ const Notebook = ({notebookName, numberOfPages, notebookId, shelfName, navigatio
         <View style={notebookStyle.notebookNameView}>
           <Text style={notebookStyle.notebookName}>{notebookName}</Text>
         </View>
-        <View style={notebookStyle.notebookPagesView}>
+        {/* <View style={notebookStyle.notebookPagesView}>
           <Text style={notebookStyle.notebookPages}>{numberOfPages} pages</Text>
-        </View>
+        </View> */}
         <View style={notebookStyle.notebookEditDelete}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() =>
+          {
+            navigation.navigate('NotebookUpdate', {
+              notebookName: notebookName,
+              navigation: navigation,
+              shelfName: shelfName,
+            });
+          }}>
             <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
           </TouchableOpacity>
           <TouchableOpacity

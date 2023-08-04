@@ -4,7 +4,6 @@ import globalStyles from '../styles/components/globalStyle';
 import homeStyles from '../styles/screens/homeStyles';
 import {Searchbar} from 'react-native-paper';
 import {setNotebook} from '../../redux/notebookShelfStore';
-import {supabase} from '../database/connection';
 import {useDispatch, useSelector} from 'react-redux';
 import FloatingButton from '../components/FloatingButton';
 import Notebook from '../components/Notebook';
@@ -39,7 +38,7 @@ const ShelfScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    getDropboxNotebooks('list-files-in-folder');
+    getDropboxNotebooks('notebook/get-notebooks');
   }, []);
 
 

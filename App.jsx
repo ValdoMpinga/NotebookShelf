@@ -19,6 +19,8 @@ import SideMenu from './src/components/SideMenu';
 import TutorialScreen from './src/screens/TutorialScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NotebookViewScreen from './src/screens/NotebookViewScreen';
+import NotebookUpdateScreen from './src/screens/NotebookUpdateScreen';
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -98,6 +100,16 @@ const HomeStack = () => {
           headerStyle: {backgroundColor: Colors.blue2},
           headerBackTitleVisible: false,
           headerTitle: 'Notebook Viewer',
+        }}
+      />
+      <Stack.Screen
+        name="NotebookUpdate"
+        component={NotebookUpdateScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: Colors.blue2},
+          headerBackTitleVisible: false,
+          headerTitle: 'Notebook Update',
         }}
       />
     </Stack.Navigator>

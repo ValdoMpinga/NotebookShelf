@@ -12,7 +12,7 @@ import {setScannedImages} from '../../redux/notebookShelfStore';
 const ScanOverviewScreen = ({navigation}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
-  const endpointURL = `http://${IP_ADDRESS}:3000/pdf/create-notebook`;
+  const endpointURL = `http://${IP_ADDRESS}:3000/notebook/create-notebook`;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
