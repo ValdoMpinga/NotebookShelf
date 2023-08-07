@@ -1,15 +1,30 @@
-// styles.js
-import { StyleSheet, Dimensions } from 'react-native';
-import {Colors} from '../../utils/constants';
-import { TextInput } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../utils/constants';
 
 export default shelfCreateUpdateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.blue2,
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
     shelfNameView: {
-        marginTop:130,
-        flex: 4,
+        marginTop: 130,
+        flex: 3,
+    },
+    loadingPostView: {
+        flex: 2,
+
     },
     createOrUpdateButtonView: {
-        flex: 2,
+        flex: 3,
     },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
 
 })

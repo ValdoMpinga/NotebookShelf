@@ -25,11 +25,12 @@ export default homeStyles = StyleSheet.create({
         alignItems: 'center',
     }, searchBar: {
         width: screenWidth / 1.25,
-    }, 
+    },
     shelvesView: {
         flex: 7,
         alignItems: 'center',
-        // backgroundColor: 'white',
-        
-    }
+    }, emptyText: {
+        fontSize: 18,
+        marginBottom: 10
+    },
 })

@@ -1,6 +1,6 @@
 // styles.js
 import { StyleSheet, Dimensions } from 'react-native';
-import {Colors} from '../../utils/constants';
+import { Colors } from '../../utils/constants';
 
 const screenWidth = Dimensions.get('window').width;
 const textInputWidth = screenWidth / 1.20;
@@ -14,12 +14,10 @@ export default globalStyles = StyleSheet.create({
         alignItems: 'center',
     },
     logoView: {
-        // backgroundColor: 'red',
         flex: 2,
         paddingTop: 20
     },
     loginView: {
-        // backgroundColor: 'green',
         flex: 1,
         justifyContent: 'center',
         flexDirection: 'row',
@@ -64,5 +62,16 @@ export default globalStyles = StyleSheet.create({
     textInput: {
         flex: 1,
     },
+    centeredContainer: {
+        flex: 1,
+        justifyContent: 'center', // Horizontal centering
+        alignItems: 'center', // Vertical centering
+        backgroundColor: Colors.blue2
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
-

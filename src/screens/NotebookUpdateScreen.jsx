@@ -1,20 +1,27 @@
-import {View, Text} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {okAlert} from '../utils/okAlert';
 import endpointComposer from '../utils/endpoinComposer';
 import {Colors} from '../utils/constants';
+import {useDispatch, useSelector} from 'react-redux';
 import shelfCreateUpdateStyles from '../styles/screens/shelfCreateUpdateStyles';
 import {TextInput} from 'react-native-paper';
 import CustomButton from '../components/CustomButton';
+import {setNotebook} from '../../redux/notebookShelfStore';
 const NotebookUpdateScreen = ({navigation, route}) => {
   const {notebookName, shelfName} = route.params;
   const [inputNotebookName, setInputNotebookName] = useState('');
+  const [isPostLoading, setIsPostLoading] = useState(false);
+
+  const {notebooks} = useSelector(state => state.notebookShelf);
+  const dispatch = useDispatch();
 
   const handleNotebookUpdate = async () => {
     try {
       let composedEndpoint = endpointComposer('notebook/rename-notebook');
 
       console.log(composedEndpoint);
+      setIsPostLoading(true);
       const response = await fetch(composedEndpoint, {
         method: 'POST',
         headers: {
@@ -30,9 +37,15 @@ const NotebookUpdateScreen = ({navigation, route}) => {
       // Handle response as needed
       const responseData = await response.json();
       console.log('Response data:', responseData);
+      setIsPostLoading(false);
 
+      const updatedNotebooks = notebooks.map(notebook =>
+        notebook === notebookName ? inputNotebookName : notebook,
+      );
+
+      dispatch(setNotebook(updatedNotebooks));
       okAlert('Success', 'Notebook updated successfully', () => {
-        navigation.goBack()
+        navigation.goBack();
       });
 
       // Navigate or perform actions based on the response
@@ -59,6 +72,11 @@ const NotebookUpdateScreen = ({navigation, route}) => {
           />
         </View>
       </View>
+      {isPostLoading && (
+        <View style={globalStyles.overlay}>
+          <ActivityIndicator size={40} color={Colors.orange} />
+        </View>
+      )}
 
       <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
         <CustomButton

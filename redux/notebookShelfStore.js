@@ -6,6 +6,8 @@ const notebookShelfSlice = createSlice(
         initialState: {
             phoneLanguage: 'en',
             t: undefined,
+            isDeletingShelf: false,
+            isDeletingNotebook: false,
             scannedImagesArray: [],
             shelves: [],
             notebooks: [],
@@ -37,10 +39,18 @@ const notebookShelfSlice = createSlice(
             {
                 state.notebooks = action.payload;
             },
+            setIsDeletingShelf(state, action)
+            {
+                state.isDeletingShelf = action.payload
+            },
+            setIsDeletingNotebook(state, action)
+            {
+                state.isDeletingNotebook = action.payload
+            }
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook } = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer

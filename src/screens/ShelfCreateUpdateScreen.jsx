@@ -1,100 +1,113 @@
-import {View, Text} from 'react-native';
-import React, {useState, useEffect} from 'react'; // Import useState
-import globalStyles from '../styles/components/globalStyle';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+
+import globalStyles from '../styles/components/globalStyle';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../utils/constants';
-import shelfCreateUpdateStyles from '../styles/screens/shelfCreateUpdateStyles';
 import endpointComposer from '../utils/endpoinComposer';
 import {okAlert} from '../utils/okAlert';
-const ShelfCreateUpdateScreen = ({navigation, route}) => {
-  const {intent,shelfName} = route.params;
+import {setShelves} from '../../redux/notebookShelfStore';
 
-  // State for the shelf name
+import shelfCreateUpdateStyles from '../styles/screens/shelfCreateUpdateStyles';
+
+const ShelfCreateUpdateScreen = ({navigation, route}) => {
+  const {intent, shelfName} = route.params;
+
+  const [isPostLoading, setIsPostLoading] = useState(false);
+  const dispatch = useDispatch();
+  const {shelves} = useSelector(state => state.notebookShelf);
+
   const [inputShelfName, setInputShelfName] = useState('');
 
-  // Function to handle POST request
   const handleCreateOrUpdate = async () => {
-    try
-    {
-      if (intent === 'Create')
-      {
-              let composedEndpoint = endpointComposer('create-shelf');
+    try {
+      setIsPostLoading(true);
 
-              console.log(composedEndpoint);
-              const response = await fetch(composedEndpoint, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  shelfName: inputShelfName,
-                }),
-              });
+      let composedEndpoint;
+      let body;
 
-              // Handle response as needed
-              const responseData = await response.json();
-              console.log('Response data:', responseData);
-
-              okAlert('Success', 'Shelf created successfully', () => {
-                navigation.navigate('Home');
-              });
-      } else if (intent === 'Update')
-      {
-               let composedEndpoint = endpointComposer('update-shelf');
-
-               console.log(composedEndpoint);
-               const response = await fetch(composedEndpoint, {
-                 method: 'POST',
-                 headers: {
-                   'Content-Type': 'application/json',
-                 },
-                 body: JSON.stringify({
-                   oldShelfName: shelfName,
-                   newShelfName: inputShelfName,
-                 }),
-               });
-
-               // Handle response as needed
-               const responseData = await response.json();
-               console.log('Response data:', responseData);
-
-               okAlert('Success', 'Shelf updated successfully', () => {
-                 navigation.navigate('Home');
-               });
+      if (intent === 'Create') {
+        composedEndpoint = endpointComposer('shelf/create-shelf');
+        body = {
+          shelfName: inputShelfName,
+        };
+      } else if (intent === 'Update') {
+        composedEndpoint = endpointComposer('shelf/update-shelf');
+        body = {
+          oldShelfName: shelfName,
+          newShelfName: inputShelfName,
+        };
       }
 
+      console.log(composedEndpoint);
+      const response = await fetch(composedEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
 
-      // Navigate or perform actions based on the response
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+      setIsPostLoading(false);
+
+      console.log("shelves now");
+      console.log(shelves);
+      
+      const updatedShelves =
+        intent === 'Create'
+          ? [...shelves, inputShelfName]
+          : shelves.map(shelf =>
+              shelf === shelfName ? inputShelfName : shelf,
+            );
+
+      dispatch(setShelves(updatedShelves));
+
+      const successMessage =
+        intent === 'Create'
+          ? 'Shelf created successfully'
+          : 'Shelf updated successfully';
+
+      okAlert('Success', successMessage, () => {
+        navigation.navigate('Home');
+      });
     } catch (error) {
       console.error('Error:', error);
+      setIsPostLoading(false);
     }
   };
 
-  useEffect(() =>
-  {
-    if (intent === 'Update')
-      setInputShelfName(shelfName);
-  },[ intent])
+  useEffect(() => {
+    if (intent === 'Update') setInputShelfName(shelfName);
+  }, [intent]);
 
   return (
-    <View style={globalStyles.container}>
+    <View style={shelfCreateUpdateStyles.container}>
       <Text style={globalStyles.title}>{intent} Shelf</Text>
       <View style={shelfCreateUpdateStyles.shelfNameView}>
         <View style={globalStyles.textInputView}>
           <TextInput
             label="Shelf name"
             value={inputShelfName}
-            onChangeText={text => setInputShelfName(text)} // Update state with input value
+            onChangeText={text => setInputShelfName(text)}
             mode="outlined"
             style={globalStyles.textInput}
           />
         </View>
       </View>
 
+      {isPostLoading && (
+        <View style={globalStyles.overlay}>
+          <ActivityIndicator size={40} color={Colors.orange} />
+        </View>
+      )}
+
       <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
         <CustomButton
-          onPress={handleCreateOrUpdate} // Call the function to handle the POST request
+          onPress={handleCreateOrUpdate}
           title={intent}
           customButtonStyle={{
             backgroundColor: Colors.white,
