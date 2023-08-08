@@ -13,8 +13,7 @@ import endpointComposer from '../utils/endpoinComposer';
 const Notebook = ({
   notebookName,
   numberOfPages,
-  notebookId,
-  shelfName,
+   shelfName,
   navigation,
 }) => {
   const dispatch = useDispatch();

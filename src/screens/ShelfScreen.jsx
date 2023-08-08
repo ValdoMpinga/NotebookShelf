@@ -18,17 +18,16 @@ import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
 import endpointComposer from '../utils/endpoinComposer';
 import {Colors} from '../utils/constants';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const ShelfScreen = ({navigation, route}) => {
   const [bounceValue] = useState(new Animated.Value(0));
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const dispatch = useDispatch();
-  const {shelfId, shelfName} = route.params;
+  const {shelfName} = route.params;
   const {notebooks, isNotebookDeleting} = useSelector(
     state => state.notebookShelf,
   );
@@ -39,7 +38,6 @@ const ShelfScreen = ({navigation, route}) => {
     <Notebook
       notebookName={item}
       numberOfPages={0}
-      notebookId={uuidv4()}
       shelfName={shelfName}
       navigation={navigation}
     />
@@ -47,7 +45,6 @@ const ShelfScreen = ({navigation, route}) => {
 
   const scanDocument = async () => {
     try {
-      // start the document scanner
       const {scannedImages} = await DocumentScanner.scanDocument();
       dispatch(setScannedImages(scannedImages[0]));
     } catch (e) {
@@ -80,6 +77,7 @@ const ShelfScreen = ({navigation, route}) => {
     startBounceAnimation();
     getDropboxNotebooks('notebook/get-notebooks');
   }, [bounceValue]);
+
 
   async function getDropboxNotebooks(endpoint) {
     try {
@@ -126,9 +124,9 @@ const ShelfScreen = ({navigation, route}) => {
       </View>
       {notebooks.length === 0 ? (
         <View style={globalStyles.centeredContainer}>
-          <Text style={homeStyles.emptyText}>No shelves created yet!</Text>
+          <Text style={homeStyles.emptyText}>No notebooks created yet!</Text>
           <Animated.View style={{transform: [{scale: bounceValue}]}}>
-            <Icon name="bookshelf" size={40} color="black" />
+            <Entypo name="book" size={40} color="black" />
           </Animated.View>
           <FloatingButton
             iconName={'notebook'}
@@ -158,7 +156,6 @@ const ShelfScreen = ({navigation, route}) => {
               style={shelfScreenStyles.flatlist}
               data={notebooks}
               renderItem={renderShelf}
-              keyExtractor={item => item.id}
               numColumns={2}
             />
           </View>
@@ -169,7 +166,7 @@ const ShelfScreen = ({navigation, route}) => {
         iconName={'line-scan'}
         onButtonClick={async () => {
           await scanDocument();
-          navigation.navigate('ScanOverview');
+          navigation.navigate('ScanOverview', {shelfName: shelfName});
         }}
       />
     </View>

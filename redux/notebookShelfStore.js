@@ -11,6 +11,8 @@ const notebookShelfSlice = createSlice(
             scannedImagesArray: [],
             shelves: [],
             notebooks: [],
+            saveScanToExistingBook: false,
+            targetNotebookToAddPages: ''
         },
         reducers: {
             setPhoneLanguage(state, action)
@@ -46,11 +48,19 @@ const notebookShelfSlice = createSlice(
             setIsDeletingNotebook(state, action)
             {
                 state.isDeletingNotebook = action.payload
-            }
+            },
+            setSaveScanToExistingBook(state, action)
+            {
+                state.saveScanToExistingBook = action.payload
+            },
+            setTargetNotebookToAddPages(state, action)
+            {
+                state.targetNotebookToAddPages = action.payload
+            },
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook } = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer

@@ -1,5 +1,5 @@
 // styles.js
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {Colors} from '../../utils/constants';
 
 export default homeStyles = StyleSheet.create({

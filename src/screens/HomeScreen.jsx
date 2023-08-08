@@ -95,34 +95,36 @@ const HomeScreen = ({navigation}) => {
     );
   } else if (shelves.length > 0) {
     content = (
-      <View style={homeStyles.container}>
-        <View style={homeStyles.homeTitleView}>
-          <Text style={globalStyles.title}>Shelves</Text>
-        </View>
-        <View style={homeStyles.searchBarView}>
-          <Searchbar
-            placeholder="Search"
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-            style={homeStyles.searchBar}
-          />
-        </View>
-        {isDeletingShelf && (
+      <>
+        <View style={homeStyles.container}>
+          <View style={homeStyles.homeTitleView}>
+            <Text style={globalStyles.title}>Shelves</Text>
+          </View>
+          <View style={homeStyles.searchBarView}>
+            <Searchbar
+              placeholder="Search"
+              onChangeText={onChangeSearch}
+              value={searchQuery}
+              style={homeStyles.searchBar}
+            />
+          </View>
+          {isDeletingShelf && (
           <View style={globalStyles.overlay}>
             <ActivityIndicator size={50} color={Colors.yellow} />
           </View>
         )}
 
-        <View style={homeStyles.shelvesView}>
-          <FlatList data={shelves} renderItem={renderShelf} />
+          <View style={homeStyles.shelvesView}>
+            <FlatList data={shelves} renderItem={renderShelf} />
+          </View>
+          <FloatingButton
+            iconName={'bookshelf'}
+            onButtonClick={() => {
+              navigation.navigate('ShelfCreateUpdate', {intent: 'Create'});
+            }}
+          />
         </View>
-        <FloatingButton
-          iconName={'bookshelf'}
-          onButtonClick={() => {
-            navigation.navigate('ShelfCreateUpdate', {intent: 'Create'});
-          }}
-        />
-      </View>
+      </>
     );
   } else {
     content = (

@@ -9,48 +9,17 @@ import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 
-const ScanOverviewScreen = ({navigation}) => {
+const ScanOverviewScreen = ({navigation, route}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
-  const endpointURL = `http://${IP_ADDRESS}:3000/notebook/create-notebook`;
+
+  const {shelfName} = route.params;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
 
   const handleImageClick = (imageUrl, index) => {
     setSelectedImageUrl(imageUrl);
-  };
-
-  // Function to upload all images to the server
-  const uploadImagesToServer = async imagePaths => {
-    const formData = new FormData();
-    formData.append('shelfName', 'Valdo'); 
-    formData.append('notebookName', 'Valdo'); 
-
-    imagePaths.forEach((imagePath, index) => {
-      const fileName = `image_${index}.jpg`;
-      formData.append('image', {
-        uri: imagePath,
-        type: 'image/jpeg',
-        name: fileName,
-      });
-    });
-
-    try {
-      // Send the formData with all images to the server using a single POST request
-      const response = await fetch(endpointURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData,
-      });
-
-      const responseData = await response.json();
-      console.log('Response from server:', responseData);
-    } catch (error) {
-      console.error('Error:', error);
-    }
   };
 
   const scanDocument = async () => {
@@ -92,6 +61,8 @@ const ScanOverviewScreen = ({navigation}) => {
 
   const reorderImages = ({data}) => {
     setImageUrls(data.map(item => item));
+    dispatch(setScannedImages([]));
+    dispatch(setScannedImages(imageUrls));
   };
 
   const renderControlButton = (title, color, marginLeft = 0, onButtonClick) => (
@@ -114,7 +85,6 @@ const ScanOverviewScreen = ({navigation}) => {
   useEffect(() => {}, [scannedImagesArray]);
   return (
     <View style={globalStyle.container}>
-      {/* <Text style={globalStyle.title}>Scan Overview</Text> */}
       <View style={scanOverviewStyles.selectedImageContainer}>
         <Image
           source={{uri: selectedImageUrl}}
@@ -127,7 +97,7 @@ const ScanOverviewScreen = ({navigation}) => {
           scanDocument();
         })}
         {renderControlButton('Save Scans', Colors.orange, 30, () => {
-          uploadImagesToServer(scannedImagesArray);
+          navigation.navigate('SaveScan', {shelfName: shelfName});
         })}
       </View>
 
