@@ -140,7 +140,7 @@ export default function SaveScanScreen({navigation, route}) {
         </View>
       )}
 
-      {saveScanToExistingBook ? (
+      {saveScanToExistingBook ===2 ? (
         <>
           <View style={globalStyle.textInputView}>
             <TextInput
