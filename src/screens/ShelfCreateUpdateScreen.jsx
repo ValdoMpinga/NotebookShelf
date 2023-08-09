@@ -54,9 +54,9 @@ const ShelfCreateUpdateScreen = ({navigation, route}) => {
       console.log('Response data:', responseData);
       setIsPostLoading(false);
 
-      console.log("shelves now");
+      console.log('shelves now');
       console.log(shelves);
-      
+
       const updatedShelves =
         intent === 'Create'
           ? [...shelves, inputShelfName]
@@ -87,36 +87,38 @@ const ShelfCreateUpdateScreen = ({navigation, route}) => {
   return (
     <View style={shelfCreateUpdateStyles.container}>
       <Text style={globalStyles.title}>{intent} Shelf</Text>
-      <View style={shelfCreateUpdateStyles.shelfNameView}>
-        <View style={globalStyles.textInputView}>
-          <TextInput
-            label="Shelf name"
-            value={inputShelfName}
-            onChangeText={text => setInputShelfName(text)}
-            mode="outlined"
-            style={globalStyles.textInput}
-          />
-        </View>
-      </View>
 
-      {isPostLoading && (
+      {isPostLoading ? (
         <View style={globalStyles.overlay}>
           <ActivityIndicator size={40} color={Colors.orange} />
         </View>
+      ) : (
+        <>
+          <View style={shelfCreateUpdateStyles.shelfNameView}>
+            <View style={globalStyles.textInputView}>
+              <TextInput
+                label="Shelf name"
+                value={inputShelfName}
+                onChangeText={text => setInputShelfName(text)}
+                mode="flat"
+                style={globalStyles.textInput}
+              />
+            </View>
+          </View>
+          <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
+            <CustomButton
+              onPress={handleCreateOrUpdate}
+              title={intent}
+              customButtonStyle={{
+                backgroundColor: Colors.white,
+                borderColor: Colors.blue1,
+                marginTop: 30,
+              }}
+              customTextStyle={{color: Colors.blue1, fontSize: 18}}
+            />
+          </View>
+        </>
       )}
-
-      <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
-        <CustomButton
-          onPress={handleCreateOrUpdate}
-          title={intent}
-          customButtonStyle={{
-            backgroundColor: Colors.white,
-            borderColor: Colors.blue1,
-            marginTop: 30,
-          }}
-          customTextStyle={{color: Colors.blue1, fontSize: 18}}
-        />
-      </View>
     </View>
   );
 };

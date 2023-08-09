@@ -54,8 +54,9 @@ const Shelf = ({shelfName, navigation, shelfId}) => {
       <View style={shelfStyles.shelfNameView}>
         <Text style={shelfStyles.shelfName}>{shelfName}</Text>
       </View>
-      <View style={shelfStyles.shelfEdit}>
+      <View style={shelfStyles.shelfDeleteView}>
         <TouchableOpacity
+          style={shelfStyles.shelfEdit}
           onPress={() => {
             navigation.navigate('ShelfCreateUpdate', {
               intent: 'Update',
@@ -65,8 +66,9 @@ const Shelf = ({shelfName, navigation, shelfId}) => {
           <FontAwesome5 name="edit" size={30} color={Colors.blue1} />
         </TouchableOpacity>
       </View>
-      <View style={shelfStyles.shelfDelete}>
+      <View style={shelfStyles.shelfDeleteView}>
         <TouchableOpacity
+          style={shelfStyles.shelfDelete}
           onPress={() => {
             yesOrNoAlert(
               'Warning',

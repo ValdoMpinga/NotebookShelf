@@ -47,8 +47,6 @@ const NotebookUpdateScreen = ({navigation, route}) => {
       okAlert('Success', 'Notebook updated successfully', () => {
         navigation.goBack();
       });
-
-      // Navigate or perform actions based on the response
     } catch (error) {
       console.error('Error:', error);
     }
@@ -61,35 +59,37 @@ const NotebookUpdateScreen = ({navigation, route}) => {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Notebook Rename</Text>
-      <View style={shelfCreateUpdateStyles.shelfNameView}>
-        <View style={globalStyles.textInputView}>
-          <TextInput
-            label="Notebook name"
-            value={inputNotebookName}
-            onChangeText={text => setInputNotebookName(text)} // Update state with input value
-            mode="outlined"
-            style={globalStyles.textInput}
-          />
-        </View>
-      </View>
-      {isPostLoading && (
+      {isPostLoading ? (
         <View style={globalStyles.overlay}>
           <ActivityIndicator size={40} color={Colors.orange} />
         </View>
+      ) : (
+        <>
+          <View style={shelfCreateUpdateStyles.shelfNameView}>
+            <View style={globalStyles.textInputView}>
+              <TextInput
+                label="Notebook name"
+                value={inputNotebookName}
+                onChangeText={text => setInputNotebookName(text)} // Update state with input value
+                mode="flat"
+                style={globalStyles.textInput}
+              />
+            </View>
+          </View>
+          <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
+            <CustomButton
+              onPress={handleNotebookUpdate} // Call the function to handle the POST request
+              title={'Update'}
+              customButtonStyle={{
+                backgroundColor: Colors.white,
+                borderColor: Colors.blue1,
+                marginTop: 30,
+              }}
+              customTextStyle={{color: Colors.blue1, fontSize: 18}}
+            />
+          </View>
+        </>
       )}
-
-      <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
-        <CustomButton
-          onPress={handleNotebookUpdate} // Call the function to handle the POST request
-          title={'Update'}
-          customButtonStyle={{
-            backgroundColor: Colors.white,
-            borderColor: Colors.blue1,
-            marginTop: 30,
-          }}
-          customTextStyle={{color: Colors.blue1, fontSize: 18}}
-        />
-      </View>
     </View>
   );
 };

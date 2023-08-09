@@ -1,6 +1,6 @@
 // .js
 import { StyleSheet, Dimensions } from 'react-native';
-import {Colors} from '../../utils/constants';
+import { Colors } from '../../utils/constants';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -37,12 +37,21 @@ export default notebookStyles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
-    notebookEditDelete: {
+    notebookEditDeleteView: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingBottom: 10,
-
+    },
+    notebookEdit: {
+        width: 60,
+        paddingLeft: 15,
+        paddingTop:10
+    },
+    notebookDelete: {
+        width: 60,
+        paddingLeft: 15,
+        paddingTop: 10
     },
 
 })

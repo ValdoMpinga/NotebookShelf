@@ -16,24 +16,23 @@ import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
 import endpointComposer from '../utils/endpoinComposer';
-import 'react-native-get-random-values';
+// import 'react-native-get-random-values';
 import {Colors} from '../utils/constants';
 
 const HomeScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredShelves, setFilteredShelves] = useState([]);
-  const [isDataFetched, setIsDataFetched] = useState(false); // Initialize as false
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
-const onChangeSearch = query => {
-  const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
-  setSearchQuery(lowercaseQuery);
+  const onChangeSearch = query => {
+    const lowercaseQuery = query.toLowerCase(); 
+    setSearchQuery(lowercaseQuery);
 
-  const filtered = shelves.filter(shelf =>
-    shelf.toLowerCase().includes(lowercaseQuery),
-  );
-  setFilteredShelves(filtered);
-};
-
+    const filtered = shelves.filter(shelf =>
+      shelf.toLowerCase().includes(lowercaseQuery),
+    );
+    setFilteredShelves(filtered);
+  };
 
   const dispatch = useDispatch();
   const {shelves, isDeletingShelf} = useSelector(state => state.notebookShelf);
@@ -61,36 +60,34 @@ const onChangeSearch = query => {
 
   useEffect(() => {
     startBounceAnimation();
-
-    async function getDropboxShelves(endpoint) {
-      try {
-        let composedEndpoint = endpointComposer(endpoint);
-        console.log(composedEndpoint);
-        const response = await fetch(composedEndpoint, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        if (response.ok) {
-          const responseData = await response.json();
-          dispatch(setShelves(responseData.endpoints));
-        } else {
-          console.error('Error:', response.statusText);
-          throw new Error('Failed to fetch data');
-        }
-
-        setIsDataFetched(true); // Set isDataFetched after successful response
-      } catch (error) {
-        console.error('Fetch Error:', error);
-        throw error;
-      }
-    }
-
     getDropboxShelves('shelf/get-shelves');
   }, [bounceValue]);
 
+  async function getDropboxShelves(endpoint) {
+    try {
+      let composedEndpoint = endpointComposer(endpoint);
+      console.log(composedEndpoint);
+      const response = await fetch(composedEndpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        dispatch(setShelves(responseData.endpoints));
+      } else {
+        console.error('Error:', response.statusText);
+        throw new Error('Failed to fetch data');
+      }
+
+      setIsDataFetched(true); // Set isDataFetched after successful response
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      throw error;
+    }
+  }
   const renderShelf = ({item}) => (
     <Shelf navigation={navigation} shelfName={item} />
   );
@@ -110,28 +107,31 @@ const onChangeSearch = query => {
           <View style={homeStyles.homeTitleView}>
             <Text style={globalStyles.title}>Shelves</Text>
           </View>
-          <View style={homeStyles.searchBarView}>
-            <Searchbar
-              placeholder="Search"
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-              style={homeStyles.searchBar}
-            />
-          </View>
-          {isDeletingShelf && (
+
+          {isDeletingShelf ? (
             <View style={globalStyles.overlay}>
+              <Text style={homeStyles.emptyText}>Deleting shelf...</Text>
               <ActivityIndicator size={50} color={Colors.yellow} />
             </View>
+          ) : (
+            <>
+              <View style={homeStyles.searchBarView}>
+                <Searchbar
+                  placeholder="Search"
+                  onChangeText={onChangeSearch}
+                  value={searchQuery}
+                  style={homeStyles.searchBar}
+                />
+              </View>
+              <View style={homeStyles.shelvesView}>
+                <FlatList
+                  data={searchQuery ? filteredShelves : shelves}
+                  renderItem={renderShelf}
+                />
+              </View>
+            </>
           )}
 
-          <View style={homeStyles.shelvesView}>
-            <FlatList
-              data={searchQuery ? filteredShelves : shelves}
-              renderItem={renderShelf}
-            />
-
-            {/* <FlatList data={shelves} renderItem={renderShelf} /> */}
-          </View>
           <FloatingButton
             iconName={'bookshelf'}
             onButtonClick={() => {

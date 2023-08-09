@@ -17,7 +17,7 @@ import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
-import 'react-native-get-random-values';
+// import 'react-native-get-random-values';
 import endpointComposer from '../utils/endpoinComposer';
 import {Colors} from '../utils/constants';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -27,23 +27,23 @@ const ShelfScreen = ({navigation, route}) => {
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [filteredNotebooks, setFilteredNotebooks] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(false); // Initialize as false
 
   const dispatch = useDispatch();
   const {shelfName} = route.params;
-  const {notebooks, isNotebookDeleting} = useSelector(
+  const {notebooks, isDeletingNotebook} = useSelector(
     state => state.notebookShelf,
   );
 
-const onChangeSearch = query => {
-  const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
-  setSearchQuery(lowercaseQuery);
+  const onChangeSearch = query => {
+    const lowercaseQuery = query.toLowerCase(); 
+    setSearchQuery(lowercaseQuery);
 
-  const filtered = notebooks.filter(notebook =>
-    notebook.toLowerCase().includes(lowercaseQuery),
-  );
-  setFilteredNotebooks(filtered); // Assuming you have a state variable for filtered notebooks
-};
-
+    const filtered = notebooks.filter(notebook =>
+      notebook.toLowerCase().includes(lowercaseQuery),
+    );
+    setFilteredNotebooks(filtered); 
+  };
 
   const renderShelf = ({item}) => (
     <Notebook
@@ -103,11 +103,10 @@ const onChangeSearch = query => {
         }),
       });
 
-      // Log the response status
       console.log('Response Status:', response.status);
 
       if (response.ok) {
-        const responseData = await response.json(); // Change to .json() if the response is JSON
+        const responseData = await response.json();
         console.log('Processed Data:', responseData.fileNames);
         console.log('Processed Data:', typeof responseData.fileNames);
         const notebooks = responseData.fileNames.map(
@@ -115,72 +114,88 @@ const onChangeSearch = query => {
         );
 
         dispatch(setNotebook(notebooks));
-
-        return responseData; // Return the data if needed
+        setIsDataFetched(true);
+        return responseData;
       } else {
         console.error('Error:', response.statusText);
         throw new Error('Failed to fetch data');
       }
     } catch (error) {
       console.error('Fetch Error:', error);
-      throw error; // Re-throw the error to handle it at a higher level if needed
+      throw error;
     }
   }
 
-  return (
-    <View style={shelfScreenStyles.container}>
-      <View style={shelfScreenStyles.titleView}>
-        <Text style={globalStyles.title}>{shelfName}</Text>
-      </View>
-      {notebooks.length === 0 ? (
-        <View style={globalStyles.centeredContainer}>
-          <Text style={homeStyles.emptyText}>No notebooks created yet!</Text>
-          <Animated.View style={{transform: [{scale: bounceValue}]}}>
-            <Entypo name="book" size={40} color="black" />
-          </Animated.View>
-          <FloatingButton
-            iconName={'notebook'}
-            onButtonClick={() => {
-              navigation.navigate('ShelfCreateUpdate', {intent: 'Create'});
-            }}
-          />
-        </View>
-      ) : (
-        <>
-          <View style={shelfScreenStyles.searchBarView}>
-            <Searchbar
-              placeholder="Search"
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-              style={homeStyles.searchBar}
-            />
-          </View>
+  let content;
 
-          {isNotebookDeleting && (
-            <View style={globalStyles.overlay}>
-              <ActivityIndicator size={50} color={Colors.blue3} />
-            </View>
-          )}
-          <View style={shelfScreenStyles.notebookView}>
-            <FlatList
-              style={shelfScreenStyles.flatlist}
-              data={searchQuery ? filteredNotebooks : notebooks}
-              renderItem={renderShelf}
-              numColumns={2}
+  if (!isDataFetched) {
+    content = (
+      <View style={globalStyles.centeredContainer}>
+        <Text style={homeStyles.emptyText}>Loading notebooks...</Text>
+        <ActivityIndicator size={50} color={Colors.orange} />
+      </View>
+    );
+  } else if (isDataFetched)
+  {
+    content = (
+      <View style={shelfScreenStyles.container}>
+        <View style={shelfScreenStyles.titleView}>
+          <Text style={globalStyles.title}>{shelfName}</Text>
+        </View>
+        {notebooks.length === 0 ? (
+          <View style={globalStyles.centeredContainer}>
+            <Text style={homeStyles.emptyText}>No notebooks created yet!</Text>
+            <Animated.View style={{transform: [{scale: bounceValue}]}}>
+              <Entypo name="book" size={40} color="black" />
+            </Animated.View>
+            <FloatingButton
+              iconName={'notebook'}
+              onButtonClick={() => {
+                navigation.navigate('ShelfCreateUpdate', {intent: 'Create'});
+              }}
             />
           </View>
-          <View></View>
-        </>
-      )}
-      <FloatingButton
-        iconName={'line-scan'}
-        onButtonClick={async () => {
-          await scanDocument();
-          navigation.navigate('ScanOverview', {shelfName: shelfName});
-        }}
-      />
-    </View>
-  );
+        ) : (
+          <>
+            {isDeletingNotebook ? (
+              <View style={globalStyles.overlay}>
+                <Text style={homeStyles.emptyText}>Deleting notebook...</Text>
+                <ActivityIndicator size={50} color={Colors.yellow} />
+              </View>
+            ) : (
+              <>
+                <View style={shelfScreenStyles.searchBarView}>
+                  <Searchbar
+                    placeholder="Search"
+                    onChangeText={onChangeSearch}
+                    value={searchQuery}
+                    style={homeStyles.searchBar}
+                  />
+                </View>
+                <View style={shelfScreenStyles.notebookView}>
+                  <FlatList
+                    style={shelfScreenStyles.flatlist}
+                    data={searchQuery ? filteredNotebooks : notebooks}
+                    renderItem={renderShelf}
+                    numColumns={2}
+                  />
+                </View>
+              </>
+            )}
+          </>
+        )}
+        <FloatingButton
+          iconName={'line-scan'}
+          onButtonClick={async () => {
+            await scanDocument();
+            navigation.navigate('ScanOverview', {shelfName: shelfName});
+          }}
+        />
+      </View>
+    );
+  }
+
+  return content;
 };
 
 export default ShelfScreen;

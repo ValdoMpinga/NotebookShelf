@@ -15,9 +15,9 @@ export default shelfScreenStyles = StyleSheet.create({
         paddingTop: 30,
     },
     titleView: {
-        flex: 1,
         alignItems: 'center',
         paddingTop: 20,
+        marginBottom:30
 
     },
     searchBarView: {

@@ -1,6 +1,6 @@
 // styles.js
 import { StyleSheet, Dimensions } from 'react-native';
-import {Colors} from '../../utils/constants';
+import { Colors } from '../../utils/constants';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -11,7 +11,9 @@ export default shelfStyles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.orange,
         flexDirection: 'row',
-        marginBottom: 30
+        marginBottom: 30,
+        // justifyContent: 'center',
+        // alignContent: 'center',
     },
     shelfNameView: {
         flex: 4,
@@ -24,16 +26,34 @@ export default shelfStyles = StyleSheet.create({
         fontWeight: '400',
         fontSize: 16,
     },
-    shelfEdit: {
+    shelfEditView: {
         flex: 1,
+        width: 60,
+        height: 60,
+        marginRight: 20
+    },
+    shelfEdit: {
+        width: 60,
+        height: 60,
         justifyContent: 'center',
-
+        alignContent: 'center',
+        paddingLeft: 15,
+        marginTop: 10,
+    },
+    shelfDeleteView: {
+        flex: 1,
+        width: 60,
+        height: 60,
+        marginRight: 20
     },
     shelfDelete: {
-        flex: 1,
+       width: 60,
+        height: 60,
         justifyContent: 'center',
-
+        alignContent: 'center',
+        paddingLeft: 15,
+        marginTop: 12,
     },
-    
+
 
 })
