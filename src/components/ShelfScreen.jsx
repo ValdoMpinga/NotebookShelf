@@ -26,24 +26,13 @@ const ShelfScreen = ({navigation, route}) => {
   const [bounceValue] = useState(new Animated.Value(0));
 
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [filteredNotebooks, setFilteredNotebooks] = useState([]);
-
   const dispatch = useDispatch();
   const {shelfName} = route.params;
   const {notebooks, isNotebookDeleting} = useSelector(
     state => state.notebookShelf,
   );
 
-const onChangeSearch = query => {
-  const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
-  setSearchQuery(lowercaseQuery);
-
-  const filtered = notebooks.filter(notebook =>
-    notebook.toLowerCase().includes(lowercaseQuery),
-  );
-  setFilteredNotebooks(filtered); // Assuming you have a state variable for filtered notebooks
-};
-
+  const onChangeSearch = query => setSearchQuery(query);
 
   const renderShelf = ({item}) => (
     <Notebook
@@ -164,7 +153,7 @@ const onChangeSearch = query => {
           <View style={shelfScreenStyles.notebookView}>
             <FlatList
               style={shelfScreenStyles.flatlist}
-              data={searchQuery ? filteredNotebooks : notebooks}
+              data={notebooks}
               renderItem={renderShelf}
               numColumns={2}
             />

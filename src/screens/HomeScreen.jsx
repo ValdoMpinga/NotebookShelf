@@ -21,9 +21,19 @@ import {Colors} from '../utils/constants';
 
 const HomeScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredShelves, setFilteredShelves] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false); // Initialize as false
 
-  const onChangeSearch = query => setSearchQuery(query);
+const onChangeSearch = query => {
+  const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
+  setSearchQuery(lowercaseQuery);
+
+  const filtered = shelves.filter(shelf =>
+    shelf.toLowerCase().includes(lowercaseQuery),
+  );
+  setFilteredShelves(filtered);
+};
+
 
   const dispatch = useDispatch();
   const {shelves, isDeletingShelf} = useSelector(state => state.notebookShelf);
@@ -109,13 +119,18 @@ const HomeScreen = ({navigation}) => {
             />
           </View>
           {isDeletingShelf && (
-          <View style={globalStyles.overlay}>
-            <ActivityIndicator size={50} color={Colors.yellow} />
-          </View>
-        )}
+            <View style={globalStyles.overlay}>
+              <ActivityIndicator size={50} color={Colors.yellow} />
+            </View>
+          )}
 
           <View style={homeStyles.shelvesView}>
-            <FlatList data={shelves} renderItem={renderShelf} />
+            <FlatList
+              data={searchQuery ? filteredShelves : shelves}
+              renderItem={renderShelf}
+            />
+
+            {/* <FlatList data={shelves} renderItem={renderShelf} /> */}
           </View>
           <FloatingButton
             iconName={'bookshelf'}
