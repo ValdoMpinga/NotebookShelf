@@ -4,7 +4,7 @@ import sideMenuItemStyles from '../styles/components/sideMenuItemStyles';
 
 const SideMenuItem = ({icon, menuName,onMenuItemClick}) => {
   return (
-    <TouchableOpacity style={sideMenuItemStyles.container} activeOpacity={0.1} onPress={()=>{ onMenuItemClick()}}>
+    <TouchableOpacity style={sideMenuItemStyles.container} activeOpacity={0.1} onPress={async ()=>{ onMenuItemClick()}}>
       <View style={sideMenuItemStyles.iconContainer}>{icon}</View>
       <Text style={sideMenuItemStyles.text}>{menuName}</Text>
     </TouchableOpacity>

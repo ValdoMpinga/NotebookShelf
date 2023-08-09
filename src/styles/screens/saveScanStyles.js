@@ -1,6 +1,9 @@
 // styles.js
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Colors } from '../../utils/constants';
+
+const screenWidth = Dimensions.get('window').width;
+const textInputWidth = screenWidth / 1.2;
 
 export default saveScanStyles = StyleSheet.create({
     controls: {
@@ -15,4 +18,20 @@ export default saveScanStyles = StyleSheet.create({
         borderColor: Colors.blue1,
         marginTop: 30,
     },
+    newNotebookInputView:
+    {
+        width: textInputWidth,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        shadowColor: 'rgba(0, 0, 0, 1)',
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 2,
+        shadowRadius: 4,
+        elevation: 5,
+        borderRadius: 8,
+        marginTop: 30,
+        flex: 0.6,
+        backgroundColor: 'red',
+        marginBottom:50
+    }
 })

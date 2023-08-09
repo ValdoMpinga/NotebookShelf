@@ -1,4 +1,4 @@
-import {View, ActivityIndicator, Text} from 'react-native';
+import {View, ActivityIndicator, Text, Dimensions} from 'react-native';
 import React, {useState} from 'react';
 import saveScanStyles from '../styles/screens/saveScanStyles';
 import CustomButton from '../components/CustomButton';
@@ -14,6 +14,7 @@ import {
 import {TextInput} from 'react-native-paper';
 import endpointComposer from '../utils/endpoinComposer';
 import {okAlert} from '../utils/okAlert';
+
 
 export default function SaveScanScreen({navigation, route}) {
   const createNotebook = async (imagesPaths, endpoint) => {
@@ -138,8 +139,8 @@ export default function SaveScanScreen({navigation, route}) {
           </View>
 
           {saveScanToExistingBook === 2 ? (
-            <>
-              <View style={globalStyle.textInputView}>
+              <View
+                style={saveScanStyles.newNotebookInputView}>
                 <TextInput
                   label="New notebook name"
                   value={inputNewNotebookName}
@@ -148,7 +149,6 @@ export default function SaveScanScreen({navigation, route}) {
                   style={globalStyle.textInput}
                 />
               </View>
-            </>
           ) : (
             <View style={{flex: 2}}>
               {notebooks.length > 0 ? (
