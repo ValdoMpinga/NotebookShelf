@@ -17,7 +17,6 @@ import Notebook from '../components/Notebook';
 import shelfScreenStyles from '../styles/screens/shelfScreenStyles';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
-// import 'react-native-get-random-values';
 import endpointComposer from '../utils/endpoinComposer';
 import {Colors} from '../utils/constants';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -27,7 +26,7 @@ const ShelfScreen = ({navigation, route}) => {
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [filteredNotebooks, setFilteredNotebooks] = useState([]);
-  const [isDataFetched, setIsDataFetched] = useState(false); // Initialize as false
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   const dispatch = useDispatch();
   const {shelfName} = route.params;
@@ -36,13 +35,13 @@ const ShelfScreen = ({navigation, route}) => {
   );
 
   const onChangeSearch = query => {
-    const lowercaseQuery = query.toLowerCase(); 
+    const lowercaseQuery = query.toLowerCase();
     setSearchQuery(lowercaseQuery);
 
     const filtered = notebooks.filter(notebook =>
       notebook.toLowerCase().includes(lowercaseQuery),
     );
-    setFilteredNotebooks(filtered); 
+    setFilteredNotebooks(filtered);
   };
 
   const renderShelf = ({item}) => (
@@ -135,8 +134,7 @@ const ShelfScreen = ({navigation, route}) => {
         <ActivityIndicator size={50} color={Colors.orange} />
       </View>
     );
-  } else if (isDataFetched)
-  {
+  } else if (isDataFetched) {
     content = (
       <View style={shelfScreenStyles.container}>
         <View style={shelfScreenStyles.titleView}>

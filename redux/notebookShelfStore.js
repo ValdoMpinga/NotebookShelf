@@ -25,7 +25,10 @@ const notebookShelfSlice = createSlice(
             },
             setScannedImages(state, action)
             {
-                if (Array.isArray(action.payload))
+                if (action.payload === "EMPTY_ARRAY")
+                {
+                    state.scannedImagesArray = []; // Empty the array
+                } else if (Array.isArray(action.payload))
                 {
                     state.scannedImagesArray = state.scannedImagesArray.concat(action.payload);
                 } else

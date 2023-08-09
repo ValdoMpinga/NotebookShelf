@@ -1,5 +1,5 @@
 import {View, ActivityIndicator, Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import saveScanStyles from '../styles/screens/saveScanStyles';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../utils/constants';
@@ -14,7 +14,6 @@ import {
 import {TextInput} from 'react-native-paper';
 import endpointComposer from '../utils/endpoinComposer';
 import {okAlert} from '../utils/okAlert';
-import overlay from 'react-native-paper';
 
 export default function SaveScanScreen({navigation, route}) {
   const createNotebook = async (imagesPaths, endpoint) => {
@@ -33,7 +32,6 @@ export default function SaveScanScreen({navigation, route}) {
     });
 
     try {
-      // Send the formData with all images to the server using a single POST request
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -44,7 +42,7 @@ export default function SaveScanScreen({navigation, route}) {
 
       const responseData = await response.json();
       setIsPosting(false);
-      dispatch(setScannedImages([]));
+      dispatch(setScannedImages('EMPTY_ARRAY'));
       okAlert(
         'Success',
         `${inputNewNotebookName} notebook created successfully!`,
@@ -77,7 +75,6 @@ export default function SaveScanScreen({navigation, route}) {
     });
 
     try {
-      // Send the formData with all images to the server using a single POST request
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -122,71 +119,74 @@ export default function SaveScanScreen({navigation, route}) {
 
   return (
     <View style={globalStyle.container}>
-      <Text> Current shelf: {shelfName} </Text>
+      <Text style={globalStyle.title}>Current shelf: {shelfName}</Text>
 
-      <View style={saveScanStyles.controls}>
-        <DropdownComponent
-          label={'Select saving option'}
-          data={saveOptions}
-          action={value => {
-            dispatch(setSaveScanToExistingBook(value));
-          }}
-        />
-      </View>
-
-      {isPosting && (
+      {isPosting ? (
         <View style={globalStyle.overlay}>
-          <ActivityIndicator size={50} color={Colors.blue3} />
+          <ActivityIndicator size={50} color={Colors.yellow} />
         </View>
-      )}
-
-      {saveScanToExistingBook ===2 ? (
+      ) : (
         <>
-          <View style={globalStyle.textInputView}>
-            <TextInput
-              label="New notebook name"
-              value={inputNewNotebookName}
-              onChangeText={text => setInputNewNotebookName(text)}
-              mode="outlined"
-              style={globalStyle.textInput}
+          <View style={saveScanStyles.controls}>
+            <DropdownComponent
+              label={'Select saving option'}
+              data={saveOptions}
+              action={value => {
+                dispatch(setSaveScanToExistingBook(value));
+              }}
+            />
+          </View>
+
+          {saveScanToExistingBook === 2 ? (
+            <>
+              <View style={globalStyle.textInputView}>
+                <TextInput
+                  label="New notebook name"
+                  value={inputNewNotebookName}
+                  onChangeText={text => setInputNewNotebookName(text)}
+                  mode="flat"
+                  style={globalStyle.textInput}
+                />
+              </View>
+            </>
+          ) : (
+            <View style={{flex: 2}}>
+              {notebooks.length > 0 ? (
+                <DropdownComponent
+                  label={'Select notebook to add pages'}
+                  data={notebookOptions}
+                  action={value => {
+                    dispatch(setTargetNotebookToAddPages(value));
+                  }}
+                />
+              ) : (
+                <Text> There is no notebook on this shelf.</Text>
+              )}
+            </View>
+          )}
+          <View style={saveScanStyles.saveButtonView}>
+            <CustomButton
+              onPress={async () => {
+                if (saveScanToExistingBook == 1) {
+                  let endpoint = endpointComposer(
+                    'notebook/add-pages-to-notebook',
+                  );
+                  await addPagesToExistingNotebook(
+                    scannedImagesArray,
+                    endpoint,
+                  );
+                } else if (saveScanToExistingBook == 2) {
+                  let endpoint = endpointComposer('notebook/create-notebook');
+                  await createNotebook(scannedImagesArray, endpoint);
+                }
+              }}
+              title={'Save'}
+              customButtonStyle={saveScanStyles.saveButton}
+              customTextStyle={{color: Colors.blue1, fontSize: 18}}
             />
           </View>
         </>
-      ) : (
-        <>
-          {notebooks.length > 0 ? (
-            <DropdownComponent
-              label={'Select notebook to add pages'}
-              data={notebookOptions}
-              action={value => {
-                dispatch(setTargetNotebookToAddPages(value));
-              }}
-            />
-          ) : (
-            <Text> There is no notebook on this shelf.</Text>
-          )}
-        </>
       )}
-      <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
-        <CustomButton
-          onPress={async () => {
-            if (saveScanToExistingBook == 1) {
-              let endpoint = endpointComposer('notebook/add-pages-to-notebook');
-              await addPagesToExistingNotebook(scannedImagesArray, endpoint);
-            } else if (saveScanToExistingBook == 2) {
-              let endpoint = endpointComposer('notebook/create-notebook');
-              await createNotebook(scannedImagesArray, endpoint);
-            }
-          }}
-          title={'Save'}
-          customButtonStyle={{
-            backgroundColor: Colors.white,
-            borderColor: Colors.blue1,
-            marginTop: 30,
-          }}
-          customTextStyle={{color: Colors.blue1, fontSize: 18}}
-        />
-      </View>
     </View>
   );
 }

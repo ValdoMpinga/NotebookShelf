@@ -1,17 +1,18 @@
 // styles.js
-import { StyleSheet, Dimensions } from 'react-native';
-import {Colors} from '../../utils/constants';
-
-const screenWidth = Dimensions.get('window').width;
-const textInputWidth = screenWidth / 1.20;
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../utils/constants';
 
 export default saveScanStyles = StyleSheet.create({
     controls: {
         marginTop: 130,
-        flex: 4,
-    },
-    saveButton: {
         flex: 2,
     },
-
+    saveButtonView: {
+        flex: 2
+    },
+    saveButton: {
+        backgroundColor: Colors.white,
+        borderColor: Colors.blue1,
+        marginTop: 30,
+    },
 })

@@ -4,16 +4,17 @@ import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
-import {Colors, IP_ADDRESS} from '../utils/constants';
+import {Colors} from '../utils/constants';
 import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import {setScannedImages} from '../../redux/notebookShelfStore';
 
-const ScanOverviewScreen = ({navigation, route}) => {
+const ScanOverviewScreen = ({navigation,route}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
+  const ipAddress = '192.168.1.212';
 
-  const {shelfName} = route.params;
+    const {shelfName} = route.params;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
@@ -61,8 +62,9 @@ const ScanOverviewScreen = ({navigation, route}) => {
 
   const reorderImages = ({data}) => {
     setImageUrls(data.map(item => item));
-    dispatch(setScannedImages([]));
-    dispatch(setScannedImages(imageUrls));
+    console.log("reorder");
+    console.log(imageUrls[0]);
+    console.log(imageUrls[1]);
   };
 
   const renderControlButton = (title, color, marginLeft = 0, onButtonClick) => (
@@ -96,7 +98,10 @@ const ScanOverviewScreen = ({navigation, route}) => {
         {renderControlButton('Add scan', Colors.blue1, 0, () => {
           scanDocument();
         })}
-        {renderControlButton('Save Scans', Colors.orange, 30, () => {
+        {renderControlButton('Save Scans', Colors.orange, 30, () =>
+        {
+          dispatch(setScannedImages("EMPTY_ARRAY"));
+          dispatch(setScannedImages(imageUrls))
           navigation.navigate('SaveScan', {shelfName: shelfName});
         })}
       </View>

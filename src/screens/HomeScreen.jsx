@@ -25,7 +25,7 @@ const HomeScreen = ({navigation}) => {
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const onChangeSearch = query => {
-    const lowercaseQuery = query.toLowerCase(); 
+    const lowercaseQuery = query.toLowerCase();
     setSearchQuery(lowercaseQuery);
 
     const filtered = shelves.filter(shelf =>
