@@ -1,10 +1,10 @@
 import { Alert } from 'react-native';
 
-export const okAlert = (title, text, okAction) =>
+export const okAlert = (title, body, okAction) =>
 {
     Alert.alert(
         title,
-        text,
+        body,
         [{ text: 'OK', onPress: okAction }],
         { cancelable: false }
     );

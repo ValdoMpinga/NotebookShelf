@@ -13,42 +13,60 @@ const NotebookUpdateScreen = ({navigation, route}) => {
   const [inputNotebookName, setInputNotebookName] = useState('');
   const [isPostLoading, setIsPostLoading] = useState(false);
 
-  const {notebooks} = useSelector(state => state.notebookShelf);
+  const {notebooks, ip} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
 
+  const checkIfNotebookNameExists = () => {
+    return notebooks.includes(inputNotebookName) ? true : false;
+  };
+
   const handleNotebookUpdate = async () => {
-    try {
-      let composedEndpoint = endpointComposer('notebook/rename-notebook');
+    setIsPostLoading(true);
 
-      console.log(composedEndpoint);
-      setIsPostLoading(true);
-      const response = await fetch(composedEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          shelfName: shelfName,
-          oldNotebook: notebookName,
-          newNotebook: inputNotebookName,
-        }),
-      });
-
-      // Handle response as needed
-      const responseData = await response.json();
-      console.log('Response data:', responseData);
+    if (inputNotebookName.length <= 3) {
+      okAlert('Warning', 'Noteook name must be at least 4 characters!');
       setIsPostLoading(false);
+    } else {
+      try {
+        if (checkIfNotebookNameExists()) {
+          okAlert('Warning', 'Notebook name already exists!');
+          setIsPostLoading(false);
+          return;
+        } else {
+          let composedEndpoint = endpointComposer(
+            ip,
+            'notebook/rename-notebook',
+          );
 
-      const updatedNotebooks = notebooks.map(notebook =>
-        notebook === notebookName ? inputNotebookName : notebook,
-      );
+          const response = await fetch(composedEndpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              shelfName: shelfName,
+              oldNotebook: notebookName,
+              newNotebook: inputNotebookName,
+            }),
+          });
 
-      dispatch(setNotebook(updatedNotebooks));
-      okAlert('Success', 'Notebook updated successfully', () => {
-        navigation.goBack();
-      });
-    } catch (error) {
-      console.error('Error:', error);
+          // Handle response as needed
+          const responseData = await response.json();
+          console.log('Response data:', responseData);
+          setIsPostLoading(false);
+
+          const updatedNotebooks = notebooks.map(notebook =>
+            notebook === notebookName ? inputNotebookName : notebook,
+          );
+
+          dispatch(setNotebook(updatedNotebooks));
+          okAlert('Success', 'Notebook updated successfully', () => {
+            navigation.goBack();
+          });
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 

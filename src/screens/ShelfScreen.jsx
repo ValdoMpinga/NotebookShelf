@@ -30,7 +30,7 @@ const ShelfScreen = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const {shelfName} = route.params;
-  const {notebooks, isDeletingNotebook} = useSelector(
+  const {notebooks, isDeletingNotebook, ip} = useSelector(
     state => state.notebookShelf,
   );
 
@@ -90,7 +90,7 @@ const ShelfScreen = ({navigation, route}) => {
 
   async function getDropboxNotebooks(endpoint) {
     try {
-      let composedEndpoint = endpointComposer(endpoint);
+      let composedEndpoint = endpointComposer(ip, endpoint);
       console.log(composedEndpoint);
       const response = await fetch(composedEndpoint, {
         method: 'POST',

@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const notebookShelfSlice = createSlice(
     {
         name: 'notebookShelf',
-        initialState: {
+        initialState:
+        {
             phoneLanguage: 'en',
             t: undefined,
             isDeletingShelf: false,
@@ -12,7 +13,8 @@ const notebookShelfSlice = createSlice(
             shelves: [],
             notebooks: [],
             saveScanToExistingBook: false,
-            targetNotebookToAddPages: ''
+            targetNotebookToAddPages: '',
+            ip: ''
         },
         reducers: {
             setPhoneLanguage(state, action)
@@ -60,10 +62,15 @@ const notebookShelfSlice = createSlice(
             {
                 state.targetNotebookToAddPages = action.payload
             },
+            setIp(state, action)
+            {
+                state.ip = action.payload;
+            },
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages } = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages, setIp } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer
+  

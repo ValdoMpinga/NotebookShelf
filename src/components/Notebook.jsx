@@ -15,7 +15,7 @@ import endpointComposer from '../utils/endpoinComposer';
 
 const Notebook = ({notebookName, shelfName, navigation}) => {
   const dispatch = useDispatch();
-  const {notebooks} = useSelector(state => state.notebookShelf);
+  const {notebooks,ip} = useSelector(state => state.notebookShelf);
 
   return (
     <TouchableOpacity
@@ -49,7 +49,7 @@ const Notebook = ({notebookName, shelfName, navigation}) => {
                 'Are you sure you want to delete this notebook',
                 async () => {
                   dispatch(setIsDeletingNotebook(true));
-                  let composedEndpoint = endpointComposer(
+                  let composedEndpoint = endpointComposer(ip,
                     'notebook/delete-notebook',
                   );
 

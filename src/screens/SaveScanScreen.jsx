@@ -14,7 +14,7 @@ import {
 import {TextInput} from 'react-native-paper';
 import endpointComposer from '../utils/endpoinComposer';
 import {okAlert} from '../utils/okAlert';
-
+import {checkIfItemExistsInArray} from '../utils/helpers';
 
 export default function SaveScanScreen({navigation, route}) {
   const createNotebook = async (imagesPaths, endpoint) => {
@@ -86,7 +86,7 @@ export default function SaveScanScreen({navigation, route}) {
 
       const responseData = await response.json();
       setIsPosting(false);
-      dispatch(setScannedImages([]));
+      dispatch(setScannedImages('EMPTY_ARRAY'));
       okAlert('Success', `Pages added to ${targetNotebookToAddPages}`, () => {
         navigation.navigate('Shelf', {shelfName: shelfName});
       });
@@ -109,6 +109,7 @@ export default function SaveScanScreen({navigation, route}) {
     notebooks,
     targetNotebookToAddPages,
     scannedImagesArray,
+    ip,
   } = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
   const [inputNewNotebookName, setInputNewNotebookName] = useState('');
@@ -121,6 +122,9 @@ export default function SaveScanScreen({navigation, route}) {
   return (
     <View style={globalStyle.container}>
       <Text style={globalStyle.title}>Current shelf: {shelfName}</Text>
+      <Text style={globalStyle.subtitle}>
+        Number of pages: {scannedImagesArray.length}
+      </Text>
 
       {isPosting ? (
         <View style={globalStyle.overlay}>
@@ -139,16 +143,15 @@ export default function SaveScanScreen({navigation, route}) {
           </View>
 
           {saveScanToExistingBook === 2 ? (
-              <View
-                style={saveScanStyles.newNotebookInputView}>
-                <TextInput
-                  label="New notebook name"
-                  value={inputNewNotebookName}
-                  onChangeText={text => setInputNewNotebookName(text)}
-                  mode="flat"
-                  style={globalStyle.textInput}
-                />
-              </View>
+            <View style={saveScanStyles.newNotebookInputView}>
+              <TextInput
+                label="New notebook name"
+                value={inputNewNotebookName}
+                onChangeText={text => setInputNewNotebookName(text)}
+                mode="flat"
+                style={globalStyle.textInput}
+              />
+            </View>
           ) : (
             <View style={{flex: 2}}>
               {notebooks.length > 0 ? (
@@ -169,6 +172,7 @@ export default function SaveScanScreen({navigation, route}) {
               onPress={async () => {
                 if (saveScanToExistingBook == 1) {
                   let endpoint = endpointComposer(
+                    ip,
                     'notebook/add-pages-to-notebook',
                   );
                   await addPagesToExistingNotebook(
@@ -176,8 +180,24 @@ export default function SaveScanScreen({navigation, route}) {
                     endpoint,
                   );
                 } else if (saveScanToExistingBook == 2) {
-                  let endpoint = endpointComposer('notebook/create-notebook');
-                  await createNotebook(scannedImagesArray, endpoint);
+                  if (inputNewNotebookName.length <= 3) {
+                    okAlert(
+                      'Warning',
+                      'Shelf name must be at least 4 characters!',
+                    );
+                  } else {
+                    if (
+                      checkIfItemExistsInArray(notebooks, inputNewNotebookName)
+                    ) {
+                      okAlert('Warning', 'Notebook name already exists');
+                    } else {
+                      let endpoint = endpointComposer(
+                        ip,
+                        'notebook/create-notebook',
+                      );
+                      await createNotebook(scannedImagesArray, endpoint);
+                    }
+                  }
                 }
               }}
               title={'Save'}

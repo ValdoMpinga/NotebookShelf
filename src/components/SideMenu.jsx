@@ -4,15 +4,10 @@ import {Colors} from '../utils/constants';
 import sideMenuStyles from '../styles/components/sideMenuStyles';
 import ProfileIcon from './ProfileIcon';
 import SideMenuItem from './SideMenuItem';
-import Feather from 'react-native-vector-icons/Feather';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
-
-const SideMenu = ({ props, navigation }) =>
-{
+const SideMenu = ({props, navigation}) => {
   const linkedinProfileUrl =
     'https://www.linkedin.com/in/valdo-mpinga-640664208/'; // Replace with the actual LinkedIn profile URL
 
@@ -61,15 +56,11 @@ const SideMenu = ({ props, navigation }) =>
         />
         <SideMenuItem
           icon={
-            <MaterialIcons
-              name="network-ping"
-              size={35}
-              color={Colors.blue2}
-            />
+            <MaterialIcons name="network-ping" size={35} color={Colors.blue2} />
           }
           menuName={'IP'}
           onMenuItemClick={async () => {
-            await openLinkedInProfile();
+            navigation.navigate('IP',{info: ''});
           }}
         />
         <SideMenuItem

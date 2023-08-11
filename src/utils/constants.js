@@ -8,10 +8,10 @@ const Colors = {
     yellow: "#FEDC5A",
 };
 
-const IP_ADDRESS = '192.168.1.241';
+const IP_KEY= 'IP'
 
 export
 {
     Colors,
-    IP_ADDRESS
+    IP_KEY
 };

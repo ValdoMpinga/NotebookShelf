@@ -28,6 +28,12 @@ export default globalStyles = StyleSheet.create({
         color: Colors.white,
         marginTop: 20,
     },
+    subtitle: {
+        fontFamily: 'Monaco',
+        fontSize: 18,
+        color: Colors.white,
+        marginTop: 20,
+    },
     textInputView: {
         width: textInputWidth,
         height: 70,

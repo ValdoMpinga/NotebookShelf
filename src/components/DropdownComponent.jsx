@@ -25,7 +25,7 @@ function DropdownComponent({label, data, action}) {
           labelField="label"
           valueField="value"
           placeholder={label}
-          value={value}
+          value={data[0]}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {

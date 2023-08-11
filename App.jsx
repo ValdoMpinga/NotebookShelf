@@ -20,7 +20,7 @@ import TutorialScreen from './src/screens/TutorialScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NotebookViewScreen from './src/screens/NotebookViewScreen';
 import NotebookUpdateScreen from './src/screens/NotebookUpdateScreen';
-
+import IP_Screen from './src/screens/IP_Screen';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -112,6 +112,17 @@ const HomeStack = () => {
           headerTitle: 'Notebook Update',
         }}
       />
+      <Stack.Screen
+        name="IP"
+        component={IP_Screen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: Colors.blue2},
+          headerBackTitleVisible: false,
+          headerTitle: 'IP Configurarion',
+          headerBackButtonMenuEnabled: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -167,6 +178,11 @@ function App() {
                 component={ShelfCreateUpdateScreen}
                 options={{headerShown: false}}
               />
+              {/* <Drawer.Screen
+                name="IP"
+                component={IP_Screen}
+                options={{headerShown: true, headerBackground: Colors.blue1}}
+              /> */}
             </Drawer.Navigator>
           </NavigationContainer>
         </GestureHandlerRootView>

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setShelves} from '../../redux/notebookShelfStore';
+import {setShelves, setIp} from '../../redux/notebookShelfStore';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import globalStyles from '../styles/components/globalStyle';
 import homeStyles from '../styles/screens/homeStyles';
@@ -16,8 +16,8 @@ import {Searchbar} from 'react-native-paper';
 import Shelf from '../components/Shelf';
 import FloatingButton from '../components/FloatingButton';
 import endpointComposer from '../utils/endpoinComposer';
-// import 'react-native-get-random-values';
 import {Colors} from '../utils/constants';
+import ipGetter from '../utils/ipGetter';
 
 const HomeScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +35,9 @@ const HomeScreen = ({navigation}) => {
   };
 
   const dispatch = useDispatch();
-  const {shelves, isDeletingShelf} = useSelector(state => state.notebookShelf);
+  const {shelves, isDeletingShelf, ip} = useSelector(
+    state => state.notebookShelf,
+  );
   const [bounceValue] = useState(new Animated.Value(0));
 
   const startBounceAnimation = () => {
@@ -60,32 +62,65 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     startBounceAnimation();
-    getDropboxShelves('shelf/get-shelves');
-  }, [bounceValue]);
+    getIp();
+  }, [bounceValue, ip]);
 
-  async function getDropboxShelves(endpoint) {
+  async function getIp() {
+    let ip = await ipGetter();
+    if (ip != '') {
+      dispatch(setIp(ip));
+      await getDropboxShelves(ip, 'shelf/get-shelves');
+    }
+  }
+
+  async function getDropboxShelves(ip, endpoint) {
+    let pingEndpoint = endpointComposer(ip, 'ping/get');
+    console.log('Ping endpoint ' + pingEndpoint);
     try {
-      let composedEndpoint = endpointComposer(endpoint);
-      console.log(composedEndpoint);
-      const response = await fetch(composedEndpoint, {
+      let pingResponse = await fetch(pingEndpoint, {
         method: 'GET',
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        dispatch(setShelves(responseData.endpoints));
-      } else {
-        console.error('Error:', response.statusText);
-        throw new Error('Failed to fetch data');
-      }
+      if (pingResponse.ok) {
+        try {
+          let composedEndpoint = endpointComposer(ip, endpoint);
+          console.log(composedEndpoint);
+          const response = await fetch(composedEndpoint, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
 
-      setIsDataFetched(true); // Set isDataFetched after successful response
-    } catch (error) {
-      console.error('Fetch Error:', error);
-      throw error;
+          if (response.ok) {
+            const responseData = await response.json();
+            dispatch(setShelves(responseData.endpoints));
+          } else {
+            console.error('Error:', response.statusText);
+            throw new Error('Failed to fetch data');
+          }
+
+          setIsDataFetched(true);
+        } catch (error) {
+          navigation.navigate('IP');
+          console.error('Error getting shelves:', error);
+          throw error;
+        }
+      }
+    } catch (e) {
+      console.log('Error pinging server');
+      console.log(e);
+      console.log('ip ' + ip);
+      ip == ''
+        ? navigation.navigate('IP', {
+            info: 'Please insert the server IP address on this screen',
+          })
+        : navigation.navigate('IP', {
+            info: 'Please insert the server IP address, if there is already one, please check if the server is on or if the ip has changed.',
+          });
     }
   }
   const renderShelf = ({item}) => (
@@ -158,7 +193,7 @@ const HomeScreen = ({navigation}) => {
     );
   }
 
-  return content; // Return the content based on the condition
+  return content;
 };
 
 export default HomeScreen;

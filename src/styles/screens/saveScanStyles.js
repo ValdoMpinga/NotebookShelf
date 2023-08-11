@@ -21,6 +21,7 @@ export default saveScanStyles = StyleSheet.create({
     newNotebookInputView:
     {
         width: textInputWidth,
+        height:60,
         justifyContent: 'center',
         flexDirection: 'row',
         shadowColor: 'rgba(0, 0, 0, 1)',
@@ -30,8 +31,7 @@ export default saveScanStyles = StyleSheet.create({
         elevation: 5,
         borderRadius: 8,
         marginTop: 30,
-        flex: 0.6,
         backgroundColor: 'red',
-        marginBottom:50
+        marginBottom:60
     }
 })

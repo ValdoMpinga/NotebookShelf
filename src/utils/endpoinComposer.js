@@ -1,6 +1,4 @@
-import { IP_ADDRESS } from "./constants";
-
-export default function endpointComposer(endpoint)
+export default function endpointComposer(ip_address, endpoint)
 {
-    return `http://${IP_ADDRESS}:3000/${endpoint}`;
+    return `http://${ip_address}:3000/${endpoint}`;
 }

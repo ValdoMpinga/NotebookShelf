@@ -12,11 +12,11 @@ import {setShelves, setIsDeletingShelf} from '../../redux/notebookShelfStore';
 
 const Shelf = ({shelfName, navigation, shelfId}) => {
   const dispatch = useDispatch();
-  const {shelves} = useSelector(state => state.notebookShelf);
+  const {shelves, ip} = useSelector(state => state.notebookShelf);
 
   const handleDeleteShelf = async () => {
     try {
-      let composedEndpoint = endpointComposer('shelf/delete-shelf');
+      let composedEndpoint = endpointComposer(ip,'shelf/delete-shelf');
       dispatch(setIsDeletingShelf(true));
       const response = await fetch(composedEndpoint, {
         method: 'POST',

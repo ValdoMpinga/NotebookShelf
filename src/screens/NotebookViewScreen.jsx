@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import PDFView from 'react-native-pdf';
 import endpointComposer from '../utils/endpoinComposer';
+import { useSelector} from 'react-redux';
 
 const NotebookViewScreen = ({route}) => {
   const {shelfName, notebookName} = route.params;
   const [pdfContent, setPdfContent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const {ip} = useSelector(state => state.notebookShelf);
 
   useEffect(() => {
     fetchPdfContent();
@@ -14,7 +16,7 @@ const NotebookViewScreen = ({route}) => {
 
   const fetchPdfContent = async () => {
     try {
-      let endpoint = endpointComposer('notebook/get-notebook-content');
+      let endpoint = endpointComposer(ip,'notebook/get-notebook-content');
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {

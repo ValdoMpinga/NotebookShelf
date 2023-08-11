@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity, BackHandler} from 'react-native';
 import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
@@ -8,16 +8,27 @@ import {Colors} from '../utils/constants';
 import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import {setScannedImages} from '../../redux/notebookShelfStore';
-
-const ScanOverviewScreen = ({navigation,route}) => {
+import yesOrNoAlert from '../utils/yesOrNoAlert';
+const ScanOverviewScreen = ({navigation, route}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
   const dispatch = useDispatch();
-  const ipAddress = '192.168.1.212';
 
-    const {shelfName} = route.params;
+  const {shelfName} = route.params;
 
   const [imageUrls, setImageUrls] = useState(scannedImagesArray);
   const [selectedImageUrl, setSelectedImageUrl] = useState(imageUrls[0]);
+
+  const handleBackPress = () => {
+    yesOrNoAlert(
+      'Warning',
+      'Are you sure you want to go back, you will lose all of your scans, but i can remake them later!',
+      () => {
+        dispatch(setScannedImages('EMPTY_ARRAY'));
+        navigation.navigate('Shelf', {shelfName: shelfName});
+      },
+    );
+    return true;
+  };
 
   const handleImageClick = (imageUrl, index) => {
     setSelectedImageUrl(imageUrl);
@@ -43,6 +54,10 @@ const ScanOverviewScreen = ({navigation,route}) => {
       : scanOverviewStyles.smallImageContainer;
 
     useEffect(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackPress,
+      );
       console.log(scannedImagesArray);
       setImageUrls(scannedImagesArray);
     }, [scannedImagesArray]);
@@ -62,7 +77,7 @@ const ScanOverviewScreen = ({navigation,route}) => {
 
   const reorderImages = ({data}) => {
     setImageUrls(data.map(item => item));
-    console.log("reorder");
+    console.log('reorder');
     console.log(imageUrls[0]);
     console.log(imageUrls[1]);
   };
@@ -98,10 +113,9 @@ const ScanOverviewScreen = ({navigation,route}) => {
         {renderControlButton('Add scan', Colors.blue1, 0, () => {
           scanDocument();
         })}
-        {renderControlButton('Save Scans', Colors.orange, 30, () =>
-        {
-          dispatch(setScannedImages("EMPTY_ARRAY"));
-          dispatch(setScannedImages(imageUrls))
+        {renderControlButton('Save Scans', Colors.orange, 30, () => {
+          dispatch(setScannedImages('EMPTY_ARRAY'));
+          dispatch(setScannedImages(imageUrls));
           navigation.navigate('SaveScan', {shelfName: shelfName});
         })}
       </View>
