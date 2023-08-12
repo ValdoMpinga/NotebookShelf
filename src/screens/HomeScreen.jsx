@@ -70,6 +70,10 @@ const HomeScreen = ({navigation}) => {
     if (ip != '') {
       dispatch(setIp(ip));
       await getDropboxShelves(ip, 'shelf/get-shelves');
+    } else {
+      navigation.navigate('IP', {
+        info: 'Please insert the server IP address on this screen',
+      });
     }
   }
 

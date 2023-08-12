@@ -1,7 +1,7 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, BackHandler} from 'react-native';
 import globalStyle from '../styles/components/globalStyle';
 import ipStyles from '../styles/screens/ipStyles';
-import {TextInput, HelperText, Button} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import React, {useState, useEffect} from 'react';
 import CustomButton from '../components/CustomButton';
 import shelfCreateUpdateStyles from '../styles/screens/shelfCreateUpdateStyles';
@@ -21,6 +21,21 @@ const IP_Screen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {ip} = useSelector(state => state.notebookShelf);
   const {info} = route.params;
+
+  const handleBackPress = () => {
+    console.log('here');
+    console.log(ip);
+    if (ip == '') {
+      okAlert(
+        'Warning',
+        'You cannot navigate to other without setting up a functional servel IP!',
+        () => {},
+      );
+    } else navigation.navigate('Home');
+
+    return true;
+  };
+
   const handleCreateOrUpdate = async () => {
     console.log(validateIP(inputIp));
 
@@ -82,6 +97,7 @@ const IP_Screen = ({navigation, route}) => {
       console.log(e);
     }
   };
+
   const getIP = async () => {
     try {
       const value = await AsyncStorage.getItem(IP_KEY);
@@ -96,13 +112,24 @@ const IP_Screen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (ip != '') setInputIP(ip);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress,
+    );
+
+    if (ip != '') {
+      setInputIP(ip);
+    } else {
+      getIP();
+    }
 
     if (info !== '') {
       okAlert('Attention', info);
     }
 
-    getIP();
+    return () => {
+      backHandler.remove(); // Remove the event listener when the component unmounts
+    };
   }, []);
   return (
     <View style={globalStyle.container}>

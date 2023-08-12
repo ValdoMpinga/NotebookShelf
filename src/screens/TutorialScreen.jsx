@@ -1,30 +1,38 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import React from 'react';
-import globalStyle from '../styles/components/globalStyle';
 import tutorialStyles from '../styles/screens/tutorialStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CustomButton from '../components/CustomButton';
+import {linkOpener} from '../utils/linkOpener';
+import {useSelector} from 'react-redux';
 
-const TutorialScreen = () => {
+const TutorialScreen = ({navigation}) => {
+  const youtubeUrl = 'https://www.youtube.com/live/jfKfPfyJRdk?feature=share';
+  const {ip} = useSelector(state => state.notebookShelf);
+
   return (
-    <View style={globalStyle.container}>
-      <View>
-        <Image
-          source={{uri: 'https://via.placeholder.com/150'}}
-          style={tutorialStyles.tutorialImage}
-          resizeMode="contain"
-        />
-      </View>
-      <View style={tutorialStyles.tutorialTextView}>
-        <Text style={tutorialStyles.tutorialText}>
-          Scan the desired paper you want, you can scan how many you want!
-        </Text>
-      </View>
-          <View style={tutorialStyles.progressView}>
-              <Text>DOT DOT DOT DOT DOT</Text>
-        <TouchableOpacity activeOpacity={0.1}>
-          <MaterialIcons name="navigate-next" size={80} />
-        </TouchableOpacity>
-      </View>
+    <View style={tutorialStyles.container}>
+      <Text style={tutorialStyles.text}>
+        The tutorial for this app is available on Youtube!
+      </Text>
+      <CustomButton
+        title={'Take me there!'}
+        customButtonStyle={tutorialStyles.takeMeThereButton}
+        customTextStyle={tutorialStyles.buttonText}
+        onPress={async () => {
+          await linkOpener(youtubeUrl);
+        }}
+      />
+      <CustomButton
+        title={'Done with the tutorial!'}
+        customButtonStyle={tutorialStyles.doneButton}
+        customTextStyle={tutorialStyles.buttonText}
+        onPress={() => {
+          if (ip == '')       navigation.navigate('IP', {
+            info: 'Please insert the server IP address on this screen',
+          });
+          else navigation.navigate('Home');
+        }}
+      />
     </View>
   );
 };

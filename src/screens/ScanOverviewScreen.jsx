@@ -54,12 +54,16 @@ const ScanOverviewScreen = ({navigation, route}) => {
       : scanOverviewStyles.smallImageContainer;
 
     useEffect(() => {
-      const backHandler = BackHandler.addEventListener(
+      const backHandler =  BackHandler.addEventListener(
         'hardwareBackPress',
         handleBackPress,
       );
       console.log(scannedImagesArray);
       setImageUrls(scannedImagesArray);
+
+      return () => {
+        backHandler.remove(); // Remove the event listener when the component unmounts
+      };
     }, [scannedImagesArray]);
     return (
       <TouchableOpacity

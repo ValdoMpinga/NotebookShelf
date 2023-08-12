@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Provider} from 'react-redux';
 import Store from './redux/store';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,7 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
-import { Colors } from './src/utils/constants';
+import {Colors} from './src/utils/constants';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
@@ -21,6 +21,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import NotebookViewScreen from './src/screens/NotebookViewScreen';
 import NotebookUpdateScreen from './src/screens/NotebookUpdateScreen';
 import IP_Screen from './src/screens/IP_Screen';
+import {useSelector} from 'react-redux';
+import {okAlert} from './src/utils/okAlert';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -45,7 +47,21 @@ const HomeScreenOptions = ({navigation}) => ({
   ),
 });
 
-const HomeStack = () => {
+const HomeStack = ({navigation}) => {
+  const {ip} = useSelector(state => state.notebookShelf);
+
+  function handleIpBackPress(navigation) {
+    if (ip == '') {
+      okAlert(
+        'Warning',
+        'You cannot navigate to other without setting up a functional servel IP!',
+        () => {},
+      );
+    } else navigation.navigate('Home');
+
+    return true;
+  }
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -120,8 +136,17 @@ const HomeStack = () => {
           headerStyle: {backgroundColor: Colors.blue2},
           headerBackTitleVisible: false,
           headerTitle: 'IP Configurarion',
-          headerBackButtonMenuEnabled: false,
-        }}
+          headerBackButtonMenuEnabled: true,
+          headerLeft: ({}) => (
+            <TouchableOpacity
+              style={{marginLeft: 12}}
+              onPress={() => {
+                handleIpBackPress(navigation);
+              }}>
+              <Ionicons name="arrow-back-outline" size={30} color="black" />
+            </TouchableOpacity>
+          ),
+      }}
       />
     </Stack.Navigator>
   );
@@ -137,7 +162,10 @@ function App() {
               initialRouteName="HomeStack"
               drawerContent={props => (
                 <SideMenu {...props} navigation={props.navigation} />
-              )}>
+              )}
+              screenOptions={({route}) => ({
+                drawerGestureEnabled: route.name !== 'IP', // Disable gesture for IP screen
+              })}>
               <Drawer.Screen
                 name="HomeStack"
                 component={HomeStack}
@@ -178,11 +206,6 @@ function App() {
                 component={ShelfCreateUpdateScreen}
                 options={{headerShown: false}}
               />
-              {/* <Drawer.Screen
-                name="IP"
-                component={IP_Screen}
-                options={{headerShown: true, headerBackground: Colors.blue1}}
-              /> */}
             </Drawer.Navigator>
           </NavigationContainer>
         </GestureHandlerRootView>

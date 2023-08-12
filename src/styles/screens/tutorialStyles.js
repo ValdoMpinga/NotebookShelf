@@ -1,26 +1,32 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 const textInputWidth = screenWidth / 1.20;
-
+import { Colors } from '../../utils/constants';
 export default buttonStyle = StyleSheet.create({
-    tutorialImageView: {
+    container: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.blue2,
+
     },
-    tutorialImage: {
-        width: 300,
-        height: 400, 
+    text: {
+        fontSize: 20,
+        textAlign: 'center',
+
     },
-    tutorialTextView: {
-        flex: 2,
-        width: textInputWidth/1.40
+    takeMeThereButton: {
+        marginTop: 20,
+        backgroundColor: Colors.orange,
     },
-    tutorialText: {
-        fontSize: 18,
-        textAlign: 'center'
+    doneButton: {
+        marginTop: 10,
+        backgroundColor: Colors.blue1,
     },
-    progressView: {
-        flex: 3,
-        flexDirection: 'row',
-        alignItems: "center", 
+    buttonText: {
+        fontSize: 16,
+        color: Colors.black
+
     }
+  
 })

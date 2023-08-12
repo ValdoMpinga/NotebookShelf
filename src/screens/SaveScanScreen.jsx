@@ -152,6 +152,34 @@ export default function SaveScanScreen({navigation, route}) {
                 style={globalStyle.textInput}
               />
             </View>
+          ) : saveScanToExistingBook === 1 ? (
+            <View style={{flex: 2}}>
+              {notebooks.length > 0 ? (
+                <DropdownComponent
+                  label={'Select notebook to add pages'}
+                  data={notebookOptions}
+                  action={value => {
+                    dispatch(setTargetNotebookToAddPages(value));
+                  }}
+                />
+              ) : (
+                <Text> There is no notebook on this shelf.</Text>
+              )}
+            </View>
+          ) : (
+            <></>
+          )}
+
+          {/* {saveScanToExistingBook === 2 ? (
+            <View style={saveScanStyles.newNotebookInputView}>
+              <TextInput
+                label="New notebook name"
+                value={inputNewNotebookName}
+                onChangeText={text => setInputNewNotebookName(text)}
+                mode="flat"
+                style={globalStyle.textInput}
+              />
+            </View>
           ) : (
             <View style={{flex: 2}}>
               {notebooks.length > 0 ? (
@@ -166,7 +194,7 @@ export default function SaveScanScreen({navigation, route}) {
                 <Text> There is no notebook on this shelf.</Text>
               )}
             </View>
-          )}
+          )} */}
           <View style={saveScanStyles.saveButtonView}>
             <CustomButton
               onPress={async () => {

@@ -7,18 +7,11 @@ import SideMenuItem from './SideMenuItem';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
+import { linkOpener } from '../utils/linkOpener';
+
 const SideMenu = ({props, navigation}) => {
   const linkedinProfileUrl =
-    'https://www.linkedin.com/in/valdo-mpinga-640664208/'; // Replace with the actual LinkedIn profile URL
-
-  const openLinkedInProfile = async () => {
-    const supported = await Linking.canOpenURL(linkedinProfileUrl);
-    if (supported) {
-      await Linking.openURL(linkedinProfileUrl);
-    } else {
-      console.error("Don't know how to open this URL:", linkedinProfileUrl);
-    }
-  };
+    'https://www.linkedin.com/in/valdo-mpinga-640664208/'; 
 
   return (
     <View style={sideMenuStyles.container}>
@@ -51,7 +44,7 @@ const SideMenu = ({props, navigation}) => {
           }
           menuName={'Developer'}
           onMenuItemClick={async () => {
-            await openLinkedInProfile();
+            await linkOpener(linkedinProfileUrl);
           }}
         />
         <SideMenuItem

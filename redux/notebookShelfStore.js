@@ -12,7 +12,7 @@ const notebookShelfSlice = createSlice(
             scannedImagesArray: [],
             shelves: [],
             notebooks: [],
-            saveScanToExistingBook: false,
+            saveScanToExistingBook: 0,
             targetNotebookToAddPages: '',
             ip: ''
         },
