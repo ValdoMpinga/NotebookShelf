@@ -73,4 +73,3 @@ const notebookShelfSlice = createSlice(
 export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages, setIp } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer
-  

@@ -14,7 +14,6 @@ import {okAlert} from '../utils/okAlert';
 import endpointComposer from '../utils/endpoinComposer';
 const IP_Screen = ({navigation, route}) => {
   const [inputIp, setInputIP] = useState('');
-  const [ipInputError, setIpInputError] = useState('');
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -36,7 +35,7 @@ const IP_Screen = ({navigation, route}) => {
     return true;
   };
 
-  const handleCreateOrUpdate = async () => {
+  const handleCreateIP = async () => {
     console.log(validateIP(inputIp));
 
     if (!validateIP(inputIp))
@@ -165,7 +164,7 @@ const IP_Screen = ({navigation, route}) => {
 
           <View style={shelfCreateUpdateStyles.createOrUpdateButtonView}>
             <CustomButton
-              onPress={handleCreateOrUpdate}
+              onPress={handleCreateIP}
               title={ip === '' ? 'Create' : 'Update'}
               customButtonStyle={{
                 backgroundColor: Colors.white,
