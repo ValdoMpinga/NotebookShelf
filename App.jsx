@@ -65,9 +65,9 @@ const HomeStack = ({navigation}) => {
   }
 
   useEffect(() => {
-   setTimeout(() => {
-     SplashScreen.hide();
-   }, 2000);
+    setTimeout(() => {
+      if (Platform.OS === 'android') SplashScreen.hide();
+    }, 2000);
   });
   return (
     <Stack.Navigator>
