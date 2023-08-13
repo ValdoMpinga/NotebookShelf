@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import {TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {TouchableOpacity, Platform} from 'react-native';
 import {Provider} from 'react-redux';
 import Store from './redux/store';
 import {NavigationContainer} from '@react-navigation/native';
@@ -22,9 +22,8 @@ import NotebookViewScreen from './src/screens/NotebookViewScreen';
 import NotebookUpdateScreen from './src/screens/NotebookUpdateScreen';
 import IP_Screen from './src/screens/IP_Screen';
 import {useSelector} from 'react-redux';
-import { okAlert } from './src/utils/okAlert';
+import {okAlert} from './src/utils/okAlert';
 import SplashScreen from 'react-native-splash-screen';
-
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -65,10 +64,11 @@ const HomeStack = ({navigation}) => {
     return true;
   }
 
-  useEffect(() =>
-  {
-    SplashScreen.hide();
-  })
+  useEffect(() => {
+   setTimeout(() => {
+     SplashScreen.hide();
+   }, 2000);
+  });
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -153,7 +153,7 @@ const HomeStack = ({navigation}) => {
               <Ionicons name="arrow-back-outline" size={30} color="black" />
             </TouchableOpacity>
           ),
-      }}
+        }}
       />
     </Stack.Navigator>
   );
