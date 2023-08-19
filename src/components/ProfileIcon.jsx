@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Svg, Circle, Image} from 'react-native-svg';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Feather';
 
 const ProfileIcon = ({ imageUrl, size = 50 }) =>
 {

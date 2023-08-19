@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import PDFView from 'react-native-pdf';
 import endpointComposer from '../utils/endpoinComposer';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import {Colors} from '../utils/constants';
 
 const NotebookViewScreen = ({route}) => {
   const {shelfName, notebookName} = route.params;
@@ -16,7 +17,7 @@ const NotebookViewScreen = ({route}) => {
 
   const fetchPdfContent = async () => {
     try {
-      let endpoint = endpointComposer(ip,'notebook/get-notebook-content');
+      let endpoint = endpointComposer(ip, 'notebook/get-notebook-content');
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -54,10 +55,22 @@ const NotebookViewScreen = ({route}) => {
   return (
     <View style={{flex: 1}}>
       {isLoading ? (
-        <ActivityIndicator style={{flex: 1}} size="large" color="#000" />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignContent: 'center',
+            backgroundColor: Colors.blue2,
+          }}>
+          <ActivityIndicator size="large" color="#000" />
+          <Text
+            style={{color: Colors.black, fontSize: 18, textAlign: 'center'}}>
+            loading notebook, this might take a while...
+          </Text>
+        </View>
       ) : pdfContent ? (
         <PDFView
-          style={{flex: 1}}
+          style={{flex: 1, backgroundColor: Colors.blue2}}
           source={{
             uri: `data:application/pdf;base64,${pdfContent}`,
           }}

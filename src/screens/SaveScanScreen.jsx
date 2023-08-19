@@ -87,6 +87,7 @@ export default function SaveScanScreen({navigation, route}) {
       const responseData = await response.json();
       setIsPosting(false);
       dispatch(setScannedImages('EMPTY_ARRAY'));
+      dispatch(setTargetNotebookToAddPages(''));
       okAlert('Success', `Pages added to ${targetNotebookToAddPages}`, () => {
         navigation.navigate('Shelf', {shelfName: shelfName});
       });
@@ -169,44 +170,24 @@ export default function SaveScanScreen({navigation, route}) {
           ) : (
             <></>
           )}
-
-          {/* {saveScanToExistingBook === 2 ? (
-            <View style={saveScanStyles.newNotebookInputView}>
-              <TextInput
-                label="New notebook name"
-                value={inputNewNotebookName}
-                onChangeText={text => setInputNewNotebookName(text)}
-                mode="flat"
-                style={globalStyle.textInput}
-              />
-            </View>
-          ) : (
-            <View style={{flex: 2}}>
-              {notebooks.length > 0 ? (
-                <DropdownComponent
-                  label={'Select notebook to add pages'}
-                  data={notebookOptions}
-                  action={value => {
-                    dispatch(setTargetNotebookToAddPages(value));
-                  }}
-                />
-              ) : (
-                <Text> There is no notebook on this shelf.</Text>
-              )}
-            </View>
-          )} */}
           <View style={saveScanStyles.saveButtonView}>
             <CustomButton
               onPress={async () => {
                 if (saveScanToExistingBook == 1) {
-                  let endpoint = endpointComposer(
-                    ip,
-                    'notebook/add-pages-to-notebook',
-                  );
-                  await addPagesToExistingNotebook(
-                    scannedImagesArray,
-                    endpoint,
-                  );
+                  console.log(targetNotebookToAddPages);
+                  if (targetNotebookToAddPages == '') {
+                    okAlert('Warning', 'You must select one notebook!');
+                  } else {
+                    let endpoint = endpointComposer(
+                      ip,
+                      'notebook/add-pages-to-notebook',
+                    );
+                    await addPagesToExistingNotebook(
+                      scannedImagesArray,
+                      endpoint,
+                    );
+                    dispatch(setSaveScanToExistingBook(0));
+                  }
                 } else if (saveScanToExistingBook == 2) {
                   if (inputNewNotebookName.length <= 3) {
                     okAlert(
@@ -224,8 +205,11 @@ export default function SaveScanScreen({navigation, route}) {
                         'notebook/create-notebook',
                       );
                       await createNotebook(scannedImagesArray, endpoint);
+                      dispatch(setSaveScanToExistingBook(0));
                     }
                   }
+                } else if (saveScanToExistingBook == 0) {
+                  okAlert('Warning', 'You must specify a saving option!');
                 }
               }}
               title={'Save'}
