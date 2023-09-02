@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.notebookshelf"
+    namespace "com.valdompinga.notebookshelf"
     defaultConfig {
-        applicationId "com.notebookshelf"
+        applicationId "com.valdompinga.notebookshelf"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -6,7 +6,7 @@ import {linkOpener} from '../utils/linkOpener';
 import {useSelector} from 'react-redux';
 
 const TutorialScreen = ({navigation}) => {
-  const youtubeUrl = 'https://www.youtube.com/live/jfKfPfyJRdk?feature=share';
+  const youtubeUrl = 'https://youtu.be/g9moTOJfMNs?si=OH6FcBqZXjXTm-9S';
   const {ip} = useSelector(state => state.notebookShelf);
 
   return (

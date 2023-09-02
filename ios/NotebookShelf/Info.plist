@@ -23,7 +23,7 @@
 		<key>CFBundleVersion</key>
 		<string>$(CURRENT_PROJECT_VERSION)</string>
 		<key>LSRequiresIPhoneOS</key>
-		<true />
+		<true/>
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSExceptionDomains</key>
@@ -31,12 +31,12 @@
 				<key>localhost</key>
 				<dict>
 					<key>NSExceptionAllowsInsecureHTTPLoads</key>
-					<true />
+					<true/>
 				</dict>
 			</dict>
 		</dict>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string />
+		<string/>
 		<key>NSCameraUsageDescription</key> <!-- Added this line for camera usage -->
 		<string>We need access to your camera to scan documents.</string> <!-- Added this line for
 		camera usage description -->
@@ -53,7 +53,7 @@
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false />
+		<false/>
 		<key>UIAppFonts</key>
 		<array>
 			<string>Monaco.ttf</string>

@@ -1,4 +1,4 @@
-package com.notebookshelf;
+package com.valdompinga.notebookshelf;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
