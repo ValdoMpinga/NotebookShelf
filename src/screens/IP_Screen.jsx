@@ -158,7 +158,7 @@ const IP_Screen = ({navigation, route}) => {
               onChangeText={text => setInputIP(text)}
               mode="flat"
               style={globalStyle.textInput}
-              keyboardType="numeric"
+              keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
             />
           </View>
 

@@ -8,10 +8,16 @@ const Colors = {
     yellow: "#FEDC5A",
 };
 
-const IP_KEY= 'IP'
+const IP_KEY = 'IP'
+
+const SCANNER_OPTIONS = {
+    croppedImageQuality: 100,
+}
 
 export
 {
     Colors,
-    IP_KEY
+    IP_KEY,
+    SCANNER_OPTIONS
 };
+

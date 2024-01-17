@@ -1,4 +1,10 @@
-import {View, ActivityIndicator, Text, Dimensions} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import React, {useState} from 'react';
 import saveScanStyles from '../styles/screens/saveScanStyles';
 import CustomButton from '../components/CustomButton';
@@ -121,104 +127,113 @@ export default function SaveScanScreen({navigation, route}) {
   }));
 
   return (
-    <View style={globalStyle.container}>
-      <Text style={globalStyle.title}>Current shelf: {shelfName}</Text>
-      <Text style={globalStyle.subtitle}>
-        Number of pages: {scannedImagesArray.length}
-      </Text>
+    <KeyboardAvoidingView
+      style={globalStyle.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Adjust the offset as needed
+    >
+      <View style={globalStyle.container}>
+        <Text style={globalStyle.title}>Current shelf: {shelfName}</Text>
+        <Text style={globalStyle.subtitle}>
+          Number of pages: {scannedImagesArray.length}
+        </Text>
 
-      {isPosting ? (
-        <View style={globalStyle.overlay}>
-          <ActivityIndicator size={50} color={Colors.yellow} />
-        </View>
-      ) : (
-        <>
-          <View style={saveScanStyles.controls}>
-            <DropdownComponent
-              label={'Select saving option'}
-              data={saveOptions}
-              action={value => {
-                dispatch(setSaveScanToExistingBook(value));
-              }}
-            />
+        {isPosting ? (
+          <View style={globalStyle.overlay}>
+            <ActivityIndicator size={50} color={Colors.yellow} />
           </View>
-
-          {saveScanToExistingBook === 2 ? (
-            <View style={saveScanStyles.newNotebookInputView}>
-              <TextInput
-                label="New notebook name"
-                value={inputNewNotebookName}
-                onChangeText={text => setInputNewNotebookName(text)}
-                mode="flat"
-                style={globalStyle.textInput}
+        ) : (
+          <>
+            <View style={saveScanStyles.controls}>
+              <DropdownComponent
+                label={'Select saving option'}
+                data={saveOptions}
+                action={value => {
+                  dispatch(setSaveScanToExistingBook(value));
+                }}
               />
             </View>
-          ) : saveScanToExistingBook === 1 ? (
-            <View style={{flex: 2}}>
-              {notebooks.length > 0 ? (
-                <DropdownComponent
-                  label={'Select notebook to add pages'}
-                  data={notebookOptions}
-                  action={value => {
-                    dispatch(setTargetNotebookToAddPages(value));
-                  }}
+
+            {saveScanToExistingBook === 2 ? (
+              <View style={saveScanStyles.newNotebookInputView}>
+                <TextInput
+                  label="New notebook name"
+                  value={inputNewNotebookName}
+                  onChangeText={text => setInputNewNotebookName(text)}
+                  mode="flat"
+                  style={globalStyle.textInput}
                 />
-              ) : (
-                <Text> There is no notebook on this shelf.</Text>
-              )}
-            </View>
-          ) : (
-            <></>
-          )}
-          <View style={saveScanStyles.saveButtonView}>
-            <CustomButton
-              onPress={async () => {
-                if (saveScanToExistingBook == 1) {
-                  console.log(targetNotebookToAddPages);
-                  if (targetNotebookToAddPages == '') {
-                    okAlert('Warning', 'You must select one notebook!');
-                  } else {
-                    let endpoint = endpointComposer(
-                      ip,
-                      'notebook/add-pages-to-notebook',
-                    );
-                    await addPagesToExistingNotebook(
-                      scannedImagesArray,
-                      endpoint,
-                    );
-                    dispatch(setSaveScanToExistingBook(0));
-                  }
-                } else if (saveScanToExistingBook == 2) {
-                  if (inputNewNotebookName.length <= 3) {
-                    okAlert(
-                      'Warning',
-                      'Shelf name must be at least 4 characters!',
-                    );
-                  } else {
-                    if (
-                      checkIfItemExistsInArray(notebooks, inputNewNotebookName)
-                    ) {
-                      okAlert('Warning', 'Notebook name already exists');
+              </View>
+            ) : saveScanToExistingBook === 1 ? (
+              <View style={{flex: 2}}>
+                {notebooks.length > 0 ? (
+                  <DropdownComponent
+                    label={'Select notebook to add pages'}
+                    data={notebookOptions}
+                    action={value => {
+                      dispatch(setTargetNotebookToAddPages(value));
+                    }}
+                  />
+                ) : (
+                  <Text> There is no notebook on this shelf.</Text>
+                )}
+              </View>
+            ) : (
+              <></>
+            )}
+            <View style={saveScanStyles.saveButtonView}>
+              <CustomButton
+                onPress={async () => {
+                  if (saveScanToExistingBook == 1) {
+                    console.log(targetNotebookToAddPages);
+                    if (targetNotebookToAddPages == '') {
+                      okAlert('Warning', 'You must select one notebook!');
                     } else {
                       let endpoint = endpointComposer(
                         ip,
-                        'notebook/create-notebook',
+                        'notebook/add-pages-to-notebook',
                       );
-                      await createNotebook(scannedImagesArray, endpoint);
+                      await addPagesToExistingNotebook(
+                        scannedImagesArray,
+                        endpoint,
+                      );
                       dispatch(setSaveScanToExistingBook(0));
                     }
+                  } else if (saveScanToExistingBook == 2) {
+                    if (inputNewNotebookName.length <= 3) {
+                      okAlert(
+                        'Warning',
+                        'Shelf name must be at least 4 characters!',
+                      );
+                    } else {
+                      if (
+                        checkIfItemExistsInArray(
+                          notebooks,
+                          inputNewNotebookName,
+                        )
+                      ) {
+                        okAlert('Warning', 'Notebook name already exists');
+                      } else {
+                        let endpoint = endpointComposer(
+                          ip,
+                          'notebook/create-notebook',
+                        );
+                        await createNotebook(scannedImagesArray, endpoint);
+                        dispatch(setSaveScanToExistingBook(0));
+                      }
+                    }
+                  } else if (saveScanToExistingBook == 0) {
+                    okAlert('Warning', 'You must specify a saving option!');
                   }
-                } else if (saveScanToExistingBook == 0) {
-                  okAlert('Warning', 'You must specify a saving option!');
-                }
-              }}
-              title={'Save'}
-              customButtonStyle={saveScanStyles.saveButton}
-              customTextStyle={{color: Colors.blue1, fontSize: 18}}
-            />
-          </View>
-        </>
-      )}
-    </View>
+                }}
+                title={'Save'}
+                customButtonStyle={saveScanStyles.saveButton}
+                customTextStyle={{color: Colors.blue1, fontSize: 18}}
+              />
+            </View>
+          </>
+        )}
+      </View>
+    </KeyboardAvoidingView>
   );
 }

@@ -11,6 +11,7 @@ export default sideMenuStyles = StyleSheet.create({
         backgroundColor: Colors.blue1,
         flex: 1,
         alignItems: 'center',
+        
 
     },
     username: {
@@ -19,13 +20,12 @@ export default sideMenuStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     profileIconView: {
-        marginTop: 10,
+        marginTop: 35
+
     },
     body: {
         backgroundColor: Colors.orange,
         flex: 3
-
-
     },
 })
 

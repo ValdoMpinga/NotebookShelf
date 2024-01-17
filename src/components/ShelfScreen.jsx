@@ -19,7 +19,7 @@ import {setScannedImages} from '../../redux/notebookShelfStore';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import 'react-native-get-random-values';
 import endpointComposer from '../utils/endpoinComposer';
-import {Colors} from '../utils/constants';
+import {Colors,SCANNER_OPTIONS} from '../utils/constants';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 const ShelfScreen = ({navigation, route}) => {
@@ -45,7 +45,9 @@ const ShelfScreen = ({navigation, route}) => {
 
   const scanDocument = async () => {
     try {
-      const {scannedImages} = await DocumentScanner.scanDocument();
+      const {scannedImages} = await DocumentScanner.scanDocument(
+        SCANNER_OPTIONS,
+      );
       dispatch(setScannedImages(scannedImages[0]));
     } catch (e) {
       console.log('some error occured:');

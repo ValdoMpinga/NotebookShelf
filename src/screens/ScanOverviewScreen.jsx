@@ -4,7 +4,7 @@ import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import CustomButton from '../components/CustomButton';
-import {Colors} from '../utils/constants';
+import {Colors, SCANNER_OPTIONS} from '../utils/constants';
 import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import {setScannedImages} from '../../redux/notebookShelfStore';
@@ -36,7 +36,9 @@ const ScanOverviewScreen = ({navigation, route}) => {
 
   const scanDocument = async () => {
     try {
-      const {scannedImages} = await DocumentScanner.scanDocument();
+      const {scannedImages} = await DocumentScanner.scanDocument(
+        SCANNER_OPTIONS,
+      );
       dispatch(setScannedImages(scannedImages[0]));
     } catch (e) {
       console.log('some error occured:');

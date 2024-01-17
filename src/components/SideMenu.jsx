@@ -17,7 +17,7 @@ const SideMenu = ({props, navigation}) => {
     <View style={sideMenuStyles.container}>
       <View style={sideMenuStyles.header}>
         <View style={sideMenuStyles.profileIconView}>
-          <ProfileIcon imageUrl={''} size={100} />
+          <ProfileIcon size={100} />
         </View>
 
         <Text style={sideMenuStyles.username}>User</Text>

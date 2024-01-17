@@ -5,10 +5,10 @@ import {Colors} from '../../utils/constants';
 export default homeStyles = StyleSheet.create({
     fabButton: {
         position: 'absolute',
-        bottom: 20,
-        right: 5,
-        width: 60,
-        height: 60,
+        bottom: 25,
+        right: 15,
+        width: 80,
+        height: 80,
         borderRadius: 28,
         backgroundColor: Colors.yellow,
         justifyContent: 'center',
