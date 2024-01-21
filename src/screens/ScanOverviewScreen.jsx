@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
 import {View, Image, TouchableOpacity, BackHandler} from 'react-native';
 import scanOverviewStyles from '../styles/screens/scanOverviewStyles';
 import globalStyle from '../styles/components/globalStyle';
@@ -7,7 +8,10 @@ import CustomButton from '../components/CustomButton';
 import {Colors, SCANNER_OPTIONS} from '../utils/constants';
 import {useSelector, useDispatch} from 'react-redux';
 import DocumentScanner from 'react-native-document-scanner-plugin';
-import {setScannedImages} from '../../redux/notebookShelfStore';
+import {
+  setScannedImages,
+  setCurrentShelfName,
+} from '../../redux/notebookShelfStore';
 import yesOrNoAlert from '../utils/yesOrNoAlert';
 const ScanOverviewScreen = ({navigation, route}) => {
   const {scannedImagesArray} = useSelector(state => state.notebookShelf);
@@ -24,6 +28,7 @@ const ScanOverviewScreen = ({navigation, route}) => {
       'Are you sure you want to go back, you will lose all of your scans, but i can remake them later!',
       () => {
         dispatch(setScannedImages('EMPTY_ARRAY'));
+        console.log('back to: ' + shelfName);
         navigation.navigate('Shelf', {shelfName: shelfName});
       },
     );
@@ -56,16 +61,7 @@ const ScanOverviewScreen = ({navigation, route}) => {
       : scanOverviewStyles.smallImageContainer;
 
     useEffect(() => {
-      const backHandler =  BackHandler.addEventListener(
-        'hardwareBackPress',
-        handleBackPress,
-      );
-      console.log(scannedImagesArray);
       setImageUrls(scannedImagesArray);
-
-      return () => {
-        backHandler.remove(); // Remove the event listener when the component unmounts
-      };
     }, [scannedImagesArray]);
     return (
       <TouchableOpacity
@@ -105,7 +101,22 @@ const ScanOverviewScreen = ({navigation, route}) => {
     />
   );
 
-  useEffect(() => {}, [scannedImagesArray]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackPress,
+      );
+
+      return () => backHandler.remove();
+    }, [handleBackPress]),
+  );
+
+  useEffect(() => {
+    console.log('YE');
+    console.log(shelfName);
+    dispatch(setCurrentShelfName(shelfName));
+  }, [scannedImagesArray]);
   return (
     <View style={globalStyle.container}>
       <View style={scanOverviewStyles.selectedImageContainer}>

@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import saveScanStyles from '../styles/screens/saveScanStyles';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../utils/constants';
@@ -107,6 +107,7 @@ export default function SaveScanScreen({navigation, route}) {
     {label: 'Existing notebook', value: 1},
     {label: 'New notebook', value: 2},
   ];
+  
   const {shelfName} = route.params;
 
   const [isPosting, setIsPosting] = useState(false);
@@ -126,15 +127,19 @@ export default function SaveScanScreen({navigation, route}) {
     value: item.trim(),
   }));
 
+  useEffect(() =>
+  {
+    
+  })
+
   return (
     <KeyboardAvoidingView
       style={globalStyle.container}
       behavior={Platform.OS === 'ios' ? 'padding' : null}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Adjust the offset as needed
-    >
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
       <View style={globalStyle.container}>
-        <Text style={globalStyle.title}>Current shelf: {shelfName}</Text>
-        <Text style={globalStyle.subtitle}>
+        <Text style={saveScanStyles.title}>Current shelf: {shelfName}</Text>
+        <Text style={saveScanStyles.subtitle}>
           Number of pages: {scannedImagesArray.length}
         </Text>
 
@@ -154,33 +159,43 @@ export default function SaveScanScreen({navigation, route}) {
               />
             </View>
 
-            {saveScanToExistingBook === 2 ? (
-              <View style={saveScanStyles.newNotebookInputView}>
-                <TextInput
-                  label="New notebook name"
-                  value={inputNewNotebookName}
-                  onChangeText={text => setInputNewNotebookName(text)}
-                  mode="flat"
-                  style={globalStyle.textInput}
-                />
-              </View>
-            ) : saveScanToExistingBook === 1 ? (
-              <View style={{flex: 2}}>
-                {notebooks.length > 0 ? (
-                  <DropdownComponent
-                    label={'Select notebook to add pages'}
-                    data={notebookOptions}
-                    action={value => {
-                      dispatch(setTargetNotebookToAddPages(value));
-                    }}
+            <View style={{marginBottom: 30}}>
+              {saveScanToExistingBook === 2 ? (
+                <View style={saveScanStyles.newNotebookInputView}>
+                  <TextInput
+                    label="New notebook name"
+                    value={inputNewNotebookName}
+                    onChangeText={text => setInputNewNotebookName(text)}
+                    mode="flat"
+                    style={globalStyle.textInput}
                   />
-                ) : (
-                  <Text> There is no notebook on this shelf.</Text>
-                )}
-              </View>
-            ) : (
-              <></>
-            )}
+                </View>
+              ) : saveScanToExistingBook === 1 ? (
+                <View>
+                  {notebooks.length > 0 ? (
+                    <DropdownComponent
+                      label={'Select notebook to add pages'}
+                      data={notebookOptions}
+                      action={value => {
+                        dispatch(setTargetNotebookToAddPages(value));
+                      }}
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        marginBottom: 30,
+                        fontSize: 18,
+                        color: Colors.white,
+                      }}>
+                      {' '}
+                      There is no notebook on this shelf.
+                    </Text>
+                  )}
+                </View>
+              ) : (
+                <></>
+              )}
+            </View>
             <View style={saveScanStyles.saveButtonView}>
               <CustomButton
                 onPress={async () => {

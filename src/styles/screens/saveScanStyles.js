@@ -10,6 +10,19 @@ export default saveScanStyles = StyleSheet.create({
         marginTop: 130,
         flex: 2,
     },
+    title: {
+        fontFamily: 'Monaco',
+        fontSize: 18,
+        color: Colors.white,
+        marginTop: 30,
+        textAlign: 'center',
+    },
+    subtitle: {
+        fontFamily: 'Monaco',
+        fontSize: 14,
+        color: Colors.white,
+        marginTop: 20,
+    },
     saveButtonView: {
         flex: 2
     },
@@ -21,7 +34,7 @@ export default saveScanStyles = StyleSheet.create({
     newNotebookInputView:
     {
         width: textInputWidth,
-        height:60,
+        height: 60,
         justifyContent: 'center',
         flexDirection: 'row',
         shadowColor: 'rgba(0, 0, 0, 1)',
@@ -30,8 +43,6 @@ export default saveScanStyles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         borderRadius: 8,
-        marginTop: 30,
         backgroundColor: 'red',
-        marginBottom:60
     }
 })

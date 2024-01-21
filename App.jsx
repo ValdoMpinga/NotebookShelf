@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, Platform} from 'react-native';
+import {TouchableOpacity, Platform, View} from 'react-native';
 import {Provider} from 'react-redux';
 import Store from './redux/store';
 import {NavigationContainer} from '@react-navigation/native';
@@ -21,9 +21,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import NotebookViewScreen from './src/screens/NotebookViewScreen';
 import NotebookUpdateScreen from './src/screens/NotebookUpdateScreen';
 import IP_Screen from './src/screens/IP_Screen';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {okAlert} from './src/utils/okAlert';
 import SplashScreen from 'react-native-splash-screen';
+import {setScannedImages} from './redux/notebookShelfStore';
+import yesOrNoAlert from './src/utils/yesOrNoAlert';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,14 +45,27 @@ const HomeScreenOptions = ({navigation}) => ({
     <TouchableOpacity
       style={{marginTop: 2, marginRight: 12}}
       onPress={() => navigation.toggleDrawer()}>
-      {/* Your custom side menu icon */}
       <Ionicons name="menu-outline" size={30} color="black" />
     </TouchableOpacity>
   ),
 });
 
 const HomeStack = ({navigation}) => {
-  const {ip} = useSelector(state => state.notebookShelf);
+  const {ip, currentShelfName} = useSelector(state => state.notebookShelf);
+  const dispatch = useDispatch();
+
+  const handleScreensWitchScansBackPress = () => {
+    yesOrNoAlert(
+      'Warning',
+      'Are you sure you want to go back, you will lose all of your scans, but you can remake them later!',
+      () => {
+        dispatch(setScannedImages('EMPTY_ARRAY'));
+        console.log('back to: ' + currentShelfName);
+        navigation.navigate('Shelf', {shelfName: currentShelfName});
+      },
+    );
+    return true;
+  };
 
   function handleIpBackPress(navigation) {
     if (ip == '') {
@@ -93,6 +108,14 @@ const HomeStack = ({navigation}) => {
           headerStyle: {backgroundColor: Colors.blue2},
           headerBackTitleVisible: false,
           headerTitle: 'Scan Overview',
+          headerLeft: ({onPress, label}) => (
+            <TouchableOpacity
+              onPress={() => handleScreensWitchScansBackPress()}>
+              <View style={{marginRight: 20}}>
+                <Ionicons name="arrow-back" size={20} color="black" />
+              </View>
+            </TouchableOpacity>
+          ),
         }}
       />
       <Stack.Screen
@@ -171,7 +194,7 @@ function App() {
                 <SideMenu {...props} navigation={props.navigation} />
               )}
               screenOptions={({route}) => ({
-                drawerGestureEnabled: route.name !== 'IP', // Disable gesture for IP screen
+                drawerGestureEnabled: route.name !== 'IP',
               })}>
               <Drawer.Screen
                 name="HomeStack"

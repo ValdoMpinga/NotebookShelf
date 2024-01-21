@@ -14,7 +14,8 @@ const notebookShelfSlice = createSlice(
             notebooks: [],
             saveScanToExistingBook: 0,
             targetNotebookToAddPages: '',
-            ip: ''
+            ip: '',
+            currentShelfName: '',
         },
         reducers: {
             setPhoneLanguage(state, action)
@@ -66,10 +67,14 @@ const notebookShelfSlice = createSlice(
             {
                 state.ip = action.payload;
             },
+            setCurrentShelfName(state, action)
+            {
+                state.currentShelfName = action.payload;
+            },
         }
     }
 )
 
-export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages, setIp } = notebookShelfSlice.actions
+export const { setPhoneLanguage, setTranslation, setScannedImages, setShelves, setNotebook, setIsDeletingShelf, setIsDeletingNotebook, setSaveScanToExistingBook, setTargetNotebookToAddPages, setIp, setCurrentShelfName } = notebookShelfSlice.actions
 
 export default notebookShelfSlice.reducer
